@@ -1,1 +1,2 @@
-# team-ma
+# CS122B Project
+
