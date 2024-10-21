@@ -10,31 +10,42 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" href="style.css">
-  <title>Movie List</title>
+  <title>Fablix</title>
 </head>
 <body>
+Welcome to Fablix!
+<p id="sessionID"></p>
+<p id="lastAccessTime"></p>
+<form ACTION="#" id="cart" METHOD="post">
+  <label>Item Purchased</label>
+  <br>
+  <label>
+    <input name="item" required="required" type="text">
+  </label>
+  <input type="submit" VALUE="add">
+</form>
+<div id="item_list"></div>
 
+<form action="movie.html" id="search" METHOD="get">
+  <label>Search for a Movie: </label>
+  <br>
+  <label>Title:
+    <input name="title" type="text">
+  </label>
+  <label>Year:
+    <input name="year" type="text">
+  </label>
+  <label>Director:
+    <input name="director" type="text">
+  </label>
+  <label>Star's Name
+    <input name="star" type="text">
+  </label>
+  <input type="submit" VALUE="Search">
+</form>
 
-<h1>Top 20 Movies</h1>
+<h1>Search/Browse for Movies</h1>
 
-<!-- Id "movie_table" is useful for jQuery to find the html element with id, class here is mapping to Bootstrap defined class CSS -->
-<table id=movie_table class="table table-striped">
-  <!-- Create a table header -->
-  <thead>
-  <tr>
-    <!-- Titles of each column-->
-    <th>Movie Title</th>
-    <th>Release Year</th>
-    <th>Director</th>
-    <th>Genres</th>
-    <th>Stars</th>
-    <th>Rating</th>
-  </tr>
-  </thead>
-  <!-- Table body is left empty here, will be populated with the data retrieved with index.js -->
-  <!-- Again, id "movie_table_body" is useful for jQuery to find this html element -->
-  <tbody id=movie_table_body></tbody>
-</table>
 
 <!-- Load jQuery and Bootstrap JS -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -46,7 +57,8 @@
 <!-- Note the url does not contain a "/" in the beginning, which means the url is relative to current path
      otherwise the url is relative to the root path-->
 <script src="index.js"></script>
-</body>
+<script src="movie.js"></script>
 
+</body>
 
 </html>
