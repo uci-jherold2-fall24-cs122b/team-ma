@@ -43,7 +43,12 @@ public class MovieServlet extends HttpServlet {
 
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
-        out.write("what");
+
+        // to get all from search
+        String title = request.getParameter("title");
+        String year = request.getParameter("year");
+        String director = request.getParameter("director");
+        String star = request.getParameter("star");
 
         // Get a connection from dataSource and let resource manager close the connection after usage.
         try (Connection conn = dataSource.getConnection()) {
@@ -67,9 +72,25 @@ public class MovieServlet extends HttpServlet {
                     "FROM " +
                     "    movies m " +
                     "JOIN " +
-                    "    ratings r ON m.id = r.movieId " +
-                    "ORDER BY " +
-                    "    r.rating DESC ";
+                    "    ratings r ON m.id = r.movieId WHERE 1=1";
+
+            // take each search query and find ILIKE
+            // ILIKE for non case sensitive
+
+            if (title != null && !title.isEmpty()) {
+                query += " AND m.title LIKE '%" + title + "%'";
+            }
+            if (year != null && !year.isEmpty()) {
+                query += " AND m.year = " + year;
+            }
+            if (director != null && !director.isEmpty()) {
+                query += " AND m.director LIKE '%" + director + "%'";
+            }
+            if (star != null && !star.isEmpty()) {
+                query += " AND EXISTS (SELECT 1 FROM stars_in_movies sim JOIN stars s ON sim.starId = s.id WHERE sim.movieId = m.id AND s.name LIKE '%" + star + "%')";
+            }
+
+            query += " ORDER BY r.rating DESC";
 
             // Perform the query
             ResultSet rs = statement.executeQuery(query);

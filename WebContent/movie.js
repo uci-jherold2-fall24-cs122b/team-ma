@@ -56,10 +56,11 @@ function handleMovieResult(resultData) {
 //  * Submit form content with GET method
 //  * @param searchEvent
 //  */
-// function handleSearchInfo(searchEvent) {
-//     console.log("submit search form");
-//     console.log(searchEvent);
-//     // Redirect to movie.html with the search query as a URL parameter
+//function handleSearchInfo(searchEvent) {
+//    console.log("submit search form");
+//    console.log(searchEvent);
+//    let formData = jQuery("#search").serialize();
+    // Redirect to movie.html with the search query as a URL parameter
 //     $.ajax("api/movies", {
 //         method: "GET",
 //         data: search.serialize(),
@@ -73,7 +74,36 @@ function handleMovieResult(resultData) {
 // }
 //
 //
-//
+function handleSearchInfo(searchEvent) {
+    console.log("submit search form");
+
+    let formData = $("#search").serialize();
+    console.log("Serialized form data: ", formData);
+
+    jQuery.ajax({
+        dataType: "json", // Setting return data type
+        method: "GET", // Setting request method
+        url: "api/movies", // Setting request URL, which is mapped by MoviesServlet in MoviesServlet.java
+        data: formData, // Send the search form data with the request
+        success: (resultData) => handleMovieResult(resultData), // Setting callback function to handle data returned successfully
+        error: (jqXHR, textStatus, errorThrown) => {
+            // Log the error to the console
+            console.error("AJAX error: ", textStatus, errorThrown);
+            console.error("Response: ", jqXHR.responseText);
+        }
+    });
+}
+
+$("#search").submit(handleSearchInfo);
+
+// Extract query parameters
+const params = new URLSearchParams(window.location.search);
+const title = params.get("title");
+const year = params.get("year");
+const director = params.get("director");
+const star = params.get("star");
+
+
 //
 // /**
 //  * Once this .js is loaded, following scripts will be executed by the browser
@@ -81,11 +111,22 @@ function handleMovieResult(resultData) {
 //
 // // Makes the HTTP GET request and registers on success callback function handleMovieResult
 jQuery.ajax({
+    dataType: "json",
+    method: "GET",
+    url: "api/movies",
+    data: { title, year, director, star }, // Send parameters to the server
+    success: handleMovieResult,
+    error: (jqXHR, textStatus, errorThrown) => {
+        console.error("AJAX error: ", textStatus, errorThrown);
+    }
+});
+
+/*jQuery.ajax({
     dataType: "json", // Setting return data type
     method: "GET", // Setting request method
     url: "api/movies", // Setting request url, which is mapped by MoviesServlet in MoviesServlet.java
     success: (resultData) => handleMovieResult(resultData) // Setting callback function to handle data returned successfully by the MovieServlet
-});
+});*/
 //
 //
 // search.submit(handleSearchInfo);
