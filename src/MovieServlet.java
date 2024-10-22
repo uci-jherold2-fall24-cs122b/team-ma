@@ -14,6 +14,7 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -101,14 +102,14 @@ public class MovieServlet extends HttpServlet {
                         + "FROM stars AS S "
                         + "JOIN stars_in_movies AS SIM ON S.id = SIM.starId "
                         + "JOIN stars_in_movies AS SIM_all ON S.id = SIM_all.starId "
-                        + "WHERE SIM.movieId = '" + movie_id + "'"
+                        + "WHERE SIM.movieId = ? "
                         + "GROUP BY S.id, S.name "
                         + "ORDER BY movie_count DESC, S.name ASC "
-                        + "LIMIT 3;";
+                        + "LIMIT 3";
 
-
-                Statement starsStatement = conn.createStatement();
-                ResultSet starsRs = starsStatement.executeQuery(starsQuery);
+                PreparedStatement starsStatement = conn.prepareStatement(starsQuery);
+                starsStatement.setString(1, movie_id);
+                ResultSet starsRs = starsStatement.executeQuery();
                 JsonArray stars = new JsonArray();
 
                 while (starsRs.next()) {
@@ -125,10 +126,11 @@ public class MovieServlet extends HttpServlet {
 
                 String genresQuery = "SELECT G.name FROM genres AS G "
                         + "JOIN genres_in_movies AS GIM ON G.id = GIM.genreId "
-                        + "WHERE GIM.movieId = '" + movie_id + "' ORDER BY G.name ASC LIMIT 3";
+                        + "WHERE GIM.movieId = ? ORDER BY G.name ASC LIMIT 3";
 
-                Statement genresStatement = conn.createStatement();
-                ResultSet genresRs = genresStatement.executeQuery(genresQuery);
+                PreparedStatement genresStatement = conn.prepareStatement(genresQuery);
+                genresStatement.setString(1, movie_id);
+                ResultSet genresRs = genresStatement.executeQuery();
                 JsonArray genres = new JsonArray();
 
                 while (genresRs.next()) {

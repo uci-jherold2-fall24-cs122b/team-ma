@@ -29,13 +29,14 @@ function handleResult(resultData) {
     movieInfoElement.empty();
 
     console.log("Result Data: ", resultData); // testing
+    console.log(resultData[0]["movie_title"]);
 
     // append two html <p> created to the h3 body, which will refresh the page
-    movieInfoElement.append("<p>Movie Title: " + resultData.movie_title +"</p>" +
-        "<p>Release Year: " + resultData.movie_year +"</p>" +
-        "<p>Director: " + resultData.movie_director +"</p>" +
-        "<p>Genres: " + resultData.movie_genres +"</p>" +
-        "<p>Rating: " + resultData.movie_rating +"</p>");
+    movieInfoElement.append("<p>Movie Title: " + resultData[0]["movie_title"] +"</p>" +
+        "<p>Release Year: " + resultData[0]["movie_year"] +"</p>" +
+        "<p>Director: " + resultData[0]["movie_director"] +"</p>" +
+        "<p>Genres: " + resultData[0]["movie_genres"].join(', ') + "</p>" +
+        "<p>Rating: " + resultData[0]["movie_rating"] +"</p>");
 
     console.log("handleResult: populating movie table from resultData");
 
@@ -59,22 +60,35 @@ function handleResult(resultData) {
 
         // Append the row created to the table body, which will refresh the page
         movieTableBodyElement.append(rowHTML);*/
-    if (resultData.stars && Array.isArray(resultData.stars)) {
-        for (let i = 0; i < Math.min(10, resultData.stars.length); i++) {
-            let rowHTML = "<tr>";
+    let stars = resultData[0]["stars"];
+    if (stars && Array.isArray(stars)) {
+        for (let j = 0; j < stars.length; j++) {
+            // Add a link to single-star.html with id passed with GET url parameter
+            const rowHTML = "<tr><th>" + '<a href=single-star.html?id=' + stars[j]['id'] + '>'
+                + stars[j]["name"] +     // display star_name for the link text
+                '</a>' + "</th></tr>";
 
-            let starName = resultData.stars[i].star_name;
-            let starId = resultData.stars[i].star_id;
-
-            rowHTML += "<th><a href='single-star.html?id=" + starId + "'>" + starName + "</a></th>";
-            rowHTML += "</tr>";
-
-            // Append the row created to the table body
             movieTableBodyElement.append(rowHTML);
         }
     } else {
         movieTableBodyElement.append("<tr><td colspan='3'>No stars found.</td></tr>"); // Fallback message for no movies
     }
+
+    // let genres = resultData[0].["genres"];
+    // if (stars && Array.isArray(genres)) {
+    //     for (let j = 0; j < stars.length; j++) {
+    //         // Add a link to single-star.html with id passed with GET url parameter
+    //         const rowHTML = "<tr><th>" + '<a href=single-star.html?id=' + stars[j]['id'] + '>'
+    //             + stars[j]["name"] +     // display star_name for the link text
+    //             '</a>' + "</th></tr>";
+    //
+    //         starTableBodyElement.append(rowHTML);
+    //     }
+    // } else {
+    //     movieTableBodyElement.append("<tr><td colspan='3'>No stars found.</td></tr>"); // Fallback message for no movies
+    // }
+
+
 }
 
 /**
