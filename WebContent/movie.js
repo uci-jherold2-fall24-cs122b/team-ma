@@ -17,31 +17,41 @@ function handleMovieResult(resultData) {
         let rowHTML = "";
         rowHTML += "<tr>";
         rowHTML +=
-            "<td>" +
-            // Add a link to single-star.html with id passed with GET url parameter
-            '<a href="single-movie.html?id=' + resultData[i]['movie_id'] + '">'
-            + resultData[i]["movie_title"] +     // display movie_title for the link text
-            '</a>' +
-            "</td>";
+            "<th>" +
+            // Add a link to single-movie.html with id passed with GET url parameter
+            '<a href=single-movie.html?id=' + resultData[i]['movie_id'] + '>'
+            + resultData[i]["movie_title"] + '</a>' +
+            "</th>";
 
-        rowHTML += "<td>" + resultData[i]["movie_year"] + "</td>";
+        rowHTML += "<th>" + resultData[i]["movie_year"] + "</th>";
+        rowHTML += "<th>" + resultData[i]["movie_director"] + "</th>";
 
-        rowHTML += "<td>" + resultData[i]["movie_director"] + "</td>";
-
-        rowHTML += "<td>" + resultData[i]["movie_genres"] + "</td>";
-
-        if (Array.isArray(resultData[i]["movie_stars"])) {
-            const starLinks = resultData[i]["movie_stars"]
-                .slice(0, 3) // Limit to first 3 stars
-                .map(star => {
-                    return '<a href="single-star.html?id=' + star['star_id'] + '">' + star['star_name'] + '</a>';
-                }).join(", ");
-            rowHTML += "<td>" + starLinks + "</td>";
-        } else {
-            rowHTML += "<td>" + resultData[i]["movie_stars"] + "</td>";
+        rowHTML += "<th>";
+        let genres = resultData[i]["genres"];
+        for (let j = 0; j < genres.length; j++) {
+            rowHTML += genres[j];
+            if (j < genres.length - 1) {
+                rowHTML += ", ";
+            }
         }
+        rowHTML += "</th>";
 
-        rowHTML += "<td>" + resultData[i]["movie_rating"] + "</td>";
+
+        rowHTML += "<th>";
+        let stars = resultData[i]["stars"];
+        for (let j = 0; j < stars.length; j++) {
+            // Add a link to single-star.html with id passed with GET url parameter
+            rowHTML +=
+                '<a href=single-star.html?id=' + stars[j]['id'] + '>'
+                + stars[j]["name"] +     // display star_name for the link text
+                '</a>';
+            if (j < stars.length - 1) {
+                rowHTML += ", ";
+            }
+        }
+        rowHTML += "</th>";
+
+        rowHTML += "<th>" + resultData[i]["movie_rating"] + "</th>";
 
         rowHTML += "</tr>";
 

@@ -55,24 +55,8 @@ public class MovieServlet extends HttpServlet {
             // Declare our statement
             Statement statement = conn.createStatement();
 
-            String query = "SELECT " +
-                    "    m.id, " +
-                    "    m.title, " +
-                    "    m.year, " +
-                    "    m.director, " +
-                    "    r.rating, " +
-                    "    (SELECT GROUP_CONCAT(DISTINCT g.name ORDER BY g.name) " +
-                    "     FROM genres_in_movies gim " +
-                    "     JOIN genres g ON gim.genreId = g.id " +
-                    "     WHERE gim.movieId = m.id) AS genres, " +
-                    "    (SELECT JSON_ARRAYAGG(JSON_OBJECT('star_id', s.id, 'star_name', s.name)) " +
-                    "     FROM stars_in_movies sim " +
-                    "     JOIN stars s ON sim.starId = s.id " +
-                    "     WHERE sim.movieId = m.id) AS stars " + // Retrieve star_id and star_name
-                    "FROM " +
-                    "    movies m " +
-                    "JOIN " +
-                    "    ratings r ON m.id = r.movieId WHERE 1=1";
+            String query = "SELECT * FROM movies as M, ratings as R WHERE M.id = R.movieId";
+
 
             // take each search query and find ILIKE
             // ILIKE for non case sensitive
@@ -104,8 +88,6 @@ public class MovieServlet extends HttpServlet {
                 int movie_year = rs.getInt("year");
                 String movie_director = rs.getString("director");
                 float movie_rating = rs.getFloat("rating");
-                String movie_genres = rs.getString("genres");
-                String movie_stars = rs.getString("stars");
 
                 // Create a JsonObject based on the data we retrieve from rs
                 JsonObject jsonObject = new JsonObject();
@@ -114,8 +96,46 @@ public class MovieServlet extends HttpServlet {
                 jsonObject.addProperty("movie_year", movie_year);
                 jsonObject.addProperty("movie_director", movie_director);
                 jsonObject.addProperty("movie_rating", movie_rating);
-                jsonObject.addProperty("movie_genres", movie_genres);
-                jsonObject.add("movie_stars", JsonParser.parseString(movie_stars));
+
+                String starsQuery = "SELECT S.name, S.id, COUNT(DISTINCT SIM_all.movieId) AS movie_count "
+                        + "FROM stars AS S "
+                        + "JOIN stars_in_movies AS SIM ON S.id = SIM.starId "
+                        + "JOIN stars_in_movies AS SIM_all ON S.id = SIM_all.starId "
+                        + "WHERE SIM.movieId = '" + movie_id + "'"
+                        + "GROUP BY S.id, S.name "
+                        + "ORDER BY movie_count DESC, S.name ASC "
+                        + "LIMIT 3;";
+
+
+                Statement starsStatement = conn.createStatement();
+                ResultSet starsRs = starsStatement.executeQuery(starsQuery);
+                JsonArray stars = new JsonArray();
+
+                while (starsRs.next()) {
+                    String starName = starsRs.getString("name");
+                    String starId = starsRs.getString("id");
+                    JsonObject starObject = new JsonObject();
+                    starObject.addProperty("name", starName);
+                    starObject.addProperty("id", starId);
+
+                    stars.add(starObject);
+                }
+
+                jsonObject.add("stars", stars);
+
+                String genresQuery = "SELECT G.name FROM genres AS G "
+                        + "JOIN genres_in_movies AS GIM ON G.id = GIM.genreId "
+                        + "WHERE GIM.movieId = '" + movie_id + "' ORDER BY G.name ASC LIMIT 3";
+
+                Statement genresStatement = conn.createStatement();
+                ResultSet genresRs = genresStatement.executeQuery(genresQuery);
+                JsonArray genres = new JsonArray();
+
+                while (genresRs.next()) {
+                    String genreName = genresRs.getString("name");
+                    genres.add(genreName);
+                }
+                jsonObject.add("genres", genres);
 
                 jsonArray.add(jsonObject);
             }
