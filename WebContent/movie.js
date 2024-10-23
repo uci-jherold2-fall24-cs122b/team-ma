@@ -10,9 +10,17 @@ function handleMovieResult(resultData) {
     // Find the empty table body by id "movie_table_body"
     let movieTableBodyElement = jQuery("#movie_table_body");
     movieTableBodyElement.empty();
+    let uniqueMovies = new Set();
 
     // Iterate through resultData, no more than 10 entries
     for (let i = 0; i < resultData.length; i++) {
+        let movieId = resultData[i]['movie_id'];
+
+        if (uniqueMovies.has(movieId)) {
+            continue;
+        }
+        // Add the movie ID to the Set to track it as added
+        uniqueMovies.add(movieId);
 
         // Concatenate the html tags with resultData jsonObject
         let rowHTML = "";
