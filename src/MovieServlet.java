@@ -17,6 +17,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
 
 // Declaring a WebServlet called MovieServlet, which maps to url "/api/movies"
@@ -50,6 +52,8 @@ public class MovieServlet extends HttpServlet {
         String year = request.getParameter("year");
         String director = request.getParameter("director");
         String star = request.getParameter("star");
+        String sort = request.getParameter("sort");
+        String N = request.getParameter("N");
         String genreId = request.getParameter("genre_id");
 
         // Get a connection from dataSource and let resource manager close the connection after usage.
@@ -84,9 +88,28 @@ public class MovieServlet extends HttpServlet {
                 query += " AND G.genreId = " + genreId;
             }
 
-            query += " ORDER BY r.rating DESC";
+            if(sort != null && !sort.isEmpty()){
+                Map<String, String> sortOptions = new HashMap<>();
+                sortOptions.put("0", " ORDER BY r.rating DESC, m.title ASC");
+                sortOptions.put("1", " ORDER BY r.rating DESC, m.title DESC");
+                sortOptions.put("2", " ORDER BY r.rating ASC, m.title ASC");
+                sortOptions.put("3", " ORDER BY r.rating ASC, m.title DESC");
+                sortOptions.put("4", " ORDER BY m.title ASC, r.rating ASC");
+                sortOptions.put("5", " ORDER BY m.title ASC, r.rating DESC");
+                sortOptions.put("6", " ORDER BY m.title DESC, r.rating ASC");
+                sortOptions.put("7", " ORDER BY m.title DESC, r.rating DESC");
 
-            // Perform the query
+                String orderByClause = sortOptions.get(sort);
+                if (orderByClause != null) {
+                    query += " " + orderByClause;
+                }
+            }
+
+            if(N != null && !N.isEmpty()) {
+                query += " LIMIT " + N;
+            }
+
+                // Perform the query
             ResultSet rs = statement.executeQuery(query);
 
             JsonArray jsonArray = new JsonArray();

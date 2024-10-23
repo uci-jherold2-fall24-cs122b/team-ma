@@ -55,20 +55,8 @@ public class SingleStarServlet extends HttpServlet {
             // Get a connection from dataSource
 
             // Construct a query with parameter represented by "?"
-            String query = "SELECT " +
-                    "    s.id AS starId, " +
-                    "    s.name AS star_name, " +
-                    "    s.birthYear AS star_dob, " +
-                    "    m.id AS movieId, " +
-                    "    m.title AS movie_title " +
-                    "FROM " +
-                    "    stars AS s " +
-                    "JOIN " +
-                    "    stars_in_movies AS sim ON s.id = sim.starId " +
-                    "JOIN " +
-                    "    movies AS m ON m.id = sim.movieId " +
-                    "WHERE " +
-                    "    s.id = ?";
+            String query = "SELECT * from stars WHERE id = ?";
+
 
             // Declare our statement
             PreparedStatement statement = conn.prepareStatement(query);
@@ -80,48 +68,47 @@ public class SingleStarServlet extends HttpServlet {
             // Perform the query
             ResultSet rs = statement.executeQuery();
 
-            JsonObject jsonObject = new JsonObject();
+            JsonArray jsonArray = new JsonArray();
 
             // Iterate through each row of rs
             while (rs.next()) {
+                String name = rs.getString("name");
+                String birthYear = rs.getString("birthYear") != null ? rs.getString("birthYear") : "N/A";
 
-                String starId = rs.getString("starId");
-                String starName = rs.getString("star_name");
-                String starDob = rs.getString("star_dob");
-                String movieId = rs.getString("movieId");
-                String movieTitle = rs.getString("movie_title");
+                String moviesQuery =
+                "SELECT M.title, M.id, M.year " +
+                "FROM stars AS S, stars_in_movies AS SIM, movies AS M " +
+                "WHERE S.id = SIM.starId " +
+                "AND SIM.movieId = M.id " +
+                "AND SIM.starId = ? " +
+                "ORDER BY M.year DESC, M.title ASC";
 
-                if (!jsonObject.has("star_id")) {
-                    jsonObject.addProperty("star_id", starId);
-                    jsonObject.addProperty("star_name", starName);
-                    jsonObject.addProperty("star_dob", starDob);
+                PreparedStatement moviesStatement = conn.prepareStatement(moviesQuery);
+                moviesStatement.setString(1, id);
+                ResultSet moviesRs = moviesStatement.executeQuery();
+                JsonArray movies = new JsonArray();
 
-                    JsonArray moviesArray = new JsonArray();
-                    JsonObject movieObject = new JsonObject();
-                    movieObject.addProperty("movie_id", movieId); // Add movieId
-                    movieObject.addProperty("movie_title", movieTitle);
-
-                    moviesArray.add(movieObject);
-
-                    // Add the movies array to the JSON object
-                    jsonObject.add("movies", moviesArray);
-                } else {
-                    // If the star details already exist, just add new movies
-                    JsonArray moviesArray = jsonObject.getAsJsonArray("movies");
-
-                    JsonObject movieObject = new JsonObject();
-                    movieObject.addProperty("movie_id", movieId);
-                    movieObject.addProperty("movie_title", movieTitle);
-
-                    moviesArray.add(movieObject);
+                while (moviesRs.next()) {
+                    JsonObject movie = new JsonObject();
+                    String title = moviesRs.getString("title");
+                    String movieId = moviesRs.getString("id");
+                    movie.addProperty("title",title);
+                    movie.addProperty("id",movieId);
+                    movies.add(movie);
                 }
+
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("star_name", name);
+                jsonObject.addProperty("star_dob", birthYear);
+                jsonObject.add("movies", movies);
+
+                jsonArray.add(jsonObject);
             }
             rs.close();
             statement.close();
 
-            //jsonObject.add("movies", moviesArray);
             // Write JSON string to output
-            out.write(jsonObject.toString());
+            out.write(jsonArray.toString());
             // Set response status to 200 (OK)
             response.setStatus(200);
 
