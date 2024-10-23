@@ -55,6 +55,7 @@ public class MovieServlet extends HttpServlet {
         String sort = request.getParameter("sort");
         String N = request.getParameter("N");
         String genreId = request.getParameter("genre_id");
+        String title_letter = request.getParameter("title_letter");
 
         // Get a connection from dataSource and let resource manager close the connection after usage.
         try (Connection conn = dataSource.getConnection()) {
@@ -87,6 +88,14 @@ public class MovieServlet extends HttpServlet {
             }
             if (genreId != null && !genreId.isEmpty()) {
                 query += " AND GIM.genreId = " + genreId;
+            }
+            if (title_letter != null && !title_letter.isEmpty()) {
+                if (title_letter.equals("*")) {
+                    //query += " AND LOWER(m.title) REGEXP '^[^A-Za-z0-9]';";
+                    //need for non alphanumeical
+                } else {
+                    query += " AND LOWER(m.title) LIKE '" + title_letter.toLowerCase() + "%'";
+                }
             }
             query += " GROUP BY M.id, M.title, M.year, M.director, R.rating, R.numVotes ";
 

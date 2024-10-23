@@ -99,6 +99,7 @@ function sortMoviesFunc(){
     const director = params.get("director");
     const star = params.get("star");
     const genre_id = params.get("genre_id");
+    const title_letter = params.get("title_letter");
 
     if(sort){
         params.set("sort", sort);
@@ -139,13 +140,14 @@ const sort = params.get("sort");
 const N = params.get("N");
 
 const genre_id = params.get("genre_id");
+const title_letter = params.get("title_letter");
 
 // // Makes the HTTP GET request and registers on success callback function handleMovieResult
 jQuery.ajax({
     dataType: "json",
     method: "GET",
     url: "api/movies",
-    data: { title, year, director, star, genre_id , sort, N}, // Send parameters to the server
+    data: { title, year, director, star, genre_id , title_letter , sort, N}, // Send parameters to the server
     success: handleMovieResult,
     error: (jqXHR, textStatus, errorThrown) => {
         console.error("AJAX error: ", textStatus, errorThrown);

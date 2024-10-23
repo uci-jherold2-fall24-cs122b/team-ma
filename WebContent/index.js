@@ -27,16 +27,72 @@ function handleSessionData(resultDataString) {
     console.log(genres);
     if (genres && Array.isArray(genres)) {
         for (let j = 0; j < genres.length; j++) {
-            // Add a link to single-star.html with id passed with GET url parameter
-            const rowHTML = "<tr><th>" + '<a href=movie.html?genre_id=' + genres[j]['genre_id'] + '>'
-                + genres[j]["genre_name"] +     // display star_name for the link text
-                '</a>' + "</th></tr>";
+            // Check if a new row is needed
+            if (j % 5 === 0) {
+                // Start a new row for every three genres
+                genreTableBodyElement.append("<tr></tr>");
+            }
 
-            genreTableBodyElement.append(rowHTML);
+            // Get the current row
+            let currentRow = genreTableBodyElement.find("tr").last();
+
+            // Create the cell with the genre link
+            const cellHTML = "<td>" + '<a href=movie.html?genre_id=' + genres[j]['genre_id'] + '>' +
+                genres[j]["genre_name"] +     // display genre_name for the link text
+                '</a>' + "</td>";
+
+            // Append the cell to the current row
+            currentRow.append(cellHTML);
         }
     } else {
         genreTableBodyElement.append("<tr><td colspan='3'>No genres found.</td></tr>"); // Fallback message for no genres
     }
+
+    // populating genre table
+    let alphaTableBodyElement = jQuery("#alpha_table_body");
+
+    console.log("populating alphabetical title table");
+
+    for (let j = 0; j < 10; j++) {
+        if (j % 5 === 0) {
+            // Start a new row for every three genres
+            alphaTableBodyElement.append("<tr></tr>");
+        }
+
+        // Get the current row
+        let currentRow = alphaTableBodyElement.find("tr").last();
+
+        const letter = j.toString();
+
+        // Create the cell with the genre link
+        const cellHTML = "<td>" + '<a href=movie.html?title_letter=' + letter + '>' +
+            letter + '</a>' + "</td>";
+
+        // Append the cell to the current row
+        currentRow.append(cellHTML);
+    }
+    for (let i = 0; i < 27; i++) {
+        if (i % 5 === 0) {
+            // Start a new row for every three genres
+            alphaTableBodyElement.append("<tr></tr>");
+        }
+
+        // Get the current row
+        let currentRow = alphaTableBodyElement.find("tr").last();
+        let letter = String.fromCharCode(65 + i);
+        if (i === 26) {
+            letter = "*";
+        }
+
+        // Create the cell with the genre link
+        const cellHTML = "<td>" + '<a href=movie.html?title_letter=' + letter + '>' +
+            letter + '</a>' + "</td>";
+
+        // Append the cell to the current row
+        currentRow.append(cellHTML);
+    }
+
+
 }
 
 /**
