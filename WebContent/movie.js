@@ -98,6 +98,7 @@ function sortMoviesFunc(){
     const year = params.get("year");
     const director = params.get("director");
     const star = params.get("star");
+    const genre_id = params.get("genre_id");
 
     if(sort){
         params.set("sort", sort);
@@ -119,7 +120,7 @@ function sortMoviesFunc(){
         dataType: "json",
         method: "GET",
         url: "api/movies",
-        data: { title, year, director, star, sort, N }, // Send parameters to the server
+        data: { title, year, director, star, genre_id, sort, N }, // Send parameters to the server
         success: handleMovieResult,
         error: (jqXHR, textStatus, errorThrown) => {
             console.error("AJAX error: ", textStatus, errorThrown);
