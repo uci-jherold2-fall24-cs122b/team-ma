@@ -5,6 +5,7 @@ let cart = $("#cart");
  * @param resultDataString jsonObject, consists of session info
  */
 function handleSessionData(resultDataString) {
+    console.log(resultDataString);
     let resultDataJson = JSON.parse(resultDataString);
 
     console.log("handle session response");
@@ -17,6 +18,25 @@ function handleSessionData(resultDataString) {
 
     // show cart information
     handleCartArray(resultDataJson["previousItems"]);
+
+    // populating genre table
+    let genreTableBodyElement = jQuery("#genre_table_body");
+
+    console.log("populating genre table");
+    let genres = resultDataJson["genres"];
+    console.log(genres);
+    if (genres && Array.isArray(genres)) {
+        for (let j = 0; j < genres.length; j++) {
+            // Add a link to single-star.html with id passed with GET url parameter
+            const rowHTML = "<tr><th>" + '<a href=movie.html?genre_id=' + genres[j]['genre_id'] + '>'
+                + genres[j]["genre_name"] +     // display star_name for the link text
+                '</a>' + "</th></tr>";
+
+            genreTableBodyElement.append(rowHTML);
+        }
+    } else {
+        genreTableBodyElement.append("<tr><td colspan='3'>No genres found.</td></tr>"); // Fallback message for no genres
+    }
 }
 
 /**

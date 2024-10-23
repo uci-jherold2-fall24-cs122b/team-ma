@@ -112,7 +112,7 @@ const title = params.get("title");
 const year = params.get("year");
 const director = params.get("director");
 const star = params.get("star");
-
+const genre_id = params.get("genre_id");
 
 //
 // /**
@@ -124,7 +124,7 @@ jQuery.ajax({
     dataType: "json",
     method: "GET",
     url: "api/movies",
-    data: { title, year, director, star }, // Send parameters to the server
+    data: { title, year, director, star, genre_id }, // Send parameters to the server
     success: handleMovieResult,
     error: (jqXHR, textStatus, errorThrown) => {
         console.error("AJAX error: ", textStatus, errorThrown);

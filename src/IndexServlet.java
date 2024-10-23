@@ -1,12 +1,21 @@
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import jakarta.servlet.ServletConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -16,6 +25,17 @@ import java.util.Date;
  */
 @WebServlet(name = "IndexServlet", urlPatterns = "/api/index")
 public class IndexServlet extends HttpServlet {
+
+    private DataSource dataSource;
+
+    public void init(ServletConfig config) {
+        try {
+            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * handles GET requests to store session information
@@ -40,7 +60,49 @@ public class IndexServlet extends HttpServlet {
         responseJsonObject.add("previousItems", previousItemsJsonArray);
 
         // write all the data into the jsonObject
-        response.getWriter().write(responseJsonObject.toString());
+        //response.getWriter().write(responseJsonObject.toString());
+
+        try (Connection conn = dataSource.getConnection()) {
+            // Declare our statement
+            Statement statement = conn.createStatement();
+
+            String query = "SELECT * FROM genres";
+
+            ResultSet rs = statement.executeQuery(query);
+
+            JsonArray jsonArray = new JsonArray();
+
+            // Iterate through each row of rs
+            while (rs.next()) {
+                String genre_id = rs.getString("id");
+                String genre_name = rs.getString("name");
+
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("genre_id", genre_id);
+                jsonObject.addProperty("genre_name", genre_name);
+                jsonArray.add(jsonObject);
+            }
+            rs.close();
+            statement.close();
+
+            request.getServletContext().log("getting " + jsonArray.size() + " results");
+
+            responseJsonObject.add("genres", jsonArray);
+            response.getWriter().write(responseJsonObject.toString());
+
+            response.setStatus(200);
+        } catch (Exception e) {
+
+            // Write error message JSON object to output
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("errorMessage", e.getMessage());
+            response.getWriter().write(jsonObject.toString());
+
+            // Set response status to 500 (Internal Server Error)
+            response.setStatus(500);
+        } finally {
+            response.getWriter().close();
+        }
     }
 
     /**

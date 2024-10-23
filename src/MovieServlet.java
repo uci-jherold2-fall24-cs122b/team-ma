@@ -50,13 +50,19 @@ public class MovieServlet extends HttpServlet {
         String year = request.getParameter("year");
         String director = request.getParameter("director");
         String star = request.getParameter("star");
+        String genreId = request.getParameter("genre_id");
 
         // Get a connection from dataSource and let resource manager close the connection after usage.
         try (Connection conn = dataSource.getConnection()) {
             // Declare our statement
             Statement statement = conn.createStatement();
 
-            String query = "SELECT * FROM movies as M, ratings as R WHERE M.id = R.movieId";
+            String query = "SELECT M.*, R.rating, R.numVotes, G.genreId " +
+                    "FROM movies AS M " +
+                    "JOIN ratings AS R ON M.id = R.movieId " +
+                    "JOIN genres_in_movies AS G ON M.id = G.movieId";
+            // old query : "SELECT * FROM movies as M, ratings as R WHERE M.id = R.movieId";
+            // added duplicates in search...
 
 
             // take each search query and find ILIKE
@@ -73,6 +79,9 @@ public class MovieServlet extends HttpServlet {
             }
             if (star != null && !star.isEmpty()) {
                 query += " AND EXISTS (SELECT 1 FROM stars_in_movies sim JOIN stars s ON sim.starId = s.id WHERE sim.movieId = m.id AND s.name LIKE '%" + star + "%')";
+            }
+            if (genreId != null && !genreId.isEmpty()) {
+                query += " AND G.genreId = " + genreId;
             }
 
             query += " ORDER BY r.rating DESC";
@@ -153,7 +162,7 @@ public class MovieServlet extends HttpServlet {
             response.setStatus(200);
 
         } catch (Exception e) {
-
+            e.printStackTrace();
             // Write error message JSON object to output
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("errorMessage", e.getMessage());
