@@ -1,3 +1,4 @@
+
 function getParameterByName(target) {
     // Get request URL
     let url = window.location.href;
@@ -45,21 +46,7 @@ function handleResult(resultData) {
     let movieTableBodyElement = jQuery("#movie_table_body");
     movieTableBodyElement.empty();
 
-    let uniqueStars = new Set();
 
-    /* Concatenate the html tags with resultData jsonObject to create table rows
-    for (let i = 0; i < Math.min(10, resultData.length); i++) {
-        let rowHTML = "";
-        rowHTML += "<tr>";
-        rowHTML += "<th>" + resultData[i]["movie_year"] + "</th>";
-        rowHTML += "<th>" + resultData[i]["movie_director"] + "</th>";
-        rowHTML += "<th>" + resultData[i]["movie_genres"] + "</th>";
-        rowHTML += "<th>" + resultData[i]["movie_stars"] + "</th>";
-        rowHTML += "<th>" + resultData[i]["movie_rating"] + "</th>";
-        rowHTML += "</tr>";
-
-        // Append the row created to the table body, which will refresh the page
-        movieTableBodyElement.append(rowHTML);*/
     let stars = resultData[0]["stars"];
     if (stars && Array.isArray(stars)) {
         for (let j = 0; j < stars.length; j++) {
@@ -73,20 +60,6 @@ function handleResult(resultData) {
     } else {
         movieTableBodyElement.append("<tr><td colspan='3'>No stars found.</td></tr>"); // Fallback message for no movies
     }
-
-    // let genres = resultData[0].["genres"];
-    // if (stars && Array.isArray(genres)) {
-    //     for (let j = 0; j < stars.length; j++) {
-    //         // Add a link to single-star.html with id passed with GET url parameter
-    //         const rowHTML = "<tr><th>" + '<a href=single-star.html?id=' + stars[j]['id'] + '>'
-    //             + stars[j]["name"] +     // display star_name for the link text
-    //             '</a>' + "</th></tr>";
-    //
-    //         starTableBodyElement.append(rowHTML);
-    //     }
-    // } else {
-    //     movieTableBodyElement.append("<tr><td colspan='3'>No stars found.</td></tr>"); // Fallback message for no movies
-    // }
 
 
 }

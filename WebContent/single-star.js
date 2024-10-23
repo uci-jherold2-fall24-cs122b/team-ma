@@ -51,11 +51,11 @@ function handleResult(resultData) {
     // append two html <p> created to the h3 body, which will refresh the page
     //starInfoElement.append("<p>Star Name: " + resultData[0]["star_name"] + "</p>");
 
-    if (resultData) {
-        starInfoElement.append("<p>Star Name: " + resultData.star_name + "</p>");
-        console.log("Star DOB: ", resultData.star_dob);
+    if (resultData[0]) {
+        starInfoElement.append("<p>Star Name: " + resultData[0]["star_name"] + "</p>");
+        console.log("Star DOB: ", resultData[0]["star_dob"]);
 
-        const starDob = (resultData.star_dob !== null) ? resultData.star_dob : "N/A";
+        const starDob = (resultData[0]["star_dob"] !== null) ? resultData[0]["star_dob"] : "N/A";
         starInfoElement.append("<p>Date of Birth: " + starDob + "</p>");
     } else {
         starInfoElement.append("<p>Star not found.</p>");
@@ -68,16 +68,16 @@ function handleResult(resultData) {
     let starTableBodyElement = jQuery("#star_table_body");
     starTableBodyElement.empty();
 
-    let uniqueMovies = new Set();
 
     // Concatenate the html tags with resultData jsonObject to create table rows
+    let movies = resultData[0]["movies"];
 
-    if (resultData.movies && Array.isArray(resultData.movies)) {
-        for (let i = 0; i < Math.min(10, resultData.movies.length); i++) {
+    if (movies && Array.isArray(movies)) {
+        for (let i = 0; i < movies.length; i++) {
             let rowHTML = "<tr>";
 
-            let movieTitle = resultData.movies[i].movie_title;
-            let movieId = resultData.movies[i].movie_id;
+            let movieTitle = movies[i]["title"];
+            let movieId = movies[i]["id"];
 
             rowHTML += "<th><a href='single-movie.html?id=" + movieId + "'>" + movieTitle + "</a></th>";
             rowHTML += "</tr>";
