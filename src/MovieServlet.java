@@ -61,12 +61,13 @@ public class MovieServlet extends HttpServlet {
             // Declare our statement
             Statement statement = conn.createStatement();
 
-            String query = "SELECT M.*, R.rating, R.numVotes, G.genreId " +
-                    "FROM movies AS M " +
-                    "JOIN ratings AS R ON M.id = R.movieId " +
-                    "JOIN genres_in_movies AS G ON M.id = G.movieId";
             // old query : "SELECT * FROM movies as M, ratings as R WHERE M.id = R.movieId";
             // added duplicates in search...
+            String query = "SELECT M.id, M.title, M.year, M.director, R.rating, R.numVotes, "
+                    + "GROUP_CONCAT(GIM.genreId) AS genre_ids "
+                    + "FROM movies AS M "
+                    + "JOIN ratings AS R ON M.id = R.movieId "
+                    + "JOIN genres_in_movies AS GIM ON M.id = GIM.movieId ";
 
 
             // take each search query and find ILIKE
@@ -85,8 +86,9 @@ public class MovieServlet extends HttpServlet {
                 query += " AND EXISTS (SELECT 1 FROM stars_in_movies sim JOIN stars s ON sim.starId = s.id WHERE sim.movieId = m.id AND s.name LIKE '%" + star + "%')";
             }
             if (genreId != null && !genreId.isEmpty()) {
-                query += " AND G.genreId = " + genreId;
+                query += " AND GIM.genreId = " + genreId;
             }
+            query += " GROUP BY M.id, M.title, M.year, M.director, R.rating, R.numVotes ";
 
             if(sort != null && !sort.isEmpty()){
                 Map<String, String> sortOptions = new HashMap<>();
