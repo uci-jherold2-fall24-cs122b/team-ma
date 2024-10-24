@@ -42,6 +42,7 @@
     </label>
     <input type="hidden" name="sort" value="0">
     <input type="hidden" name="N" value="10">
+    <input type="hidden" name="page" value="1">
     <input type="submit" VALUE="Search">
 </form>
 <label for="sort">Sort by:</label>
@@ -84,6 +85,8 @@
     <!-- Again, id "movie_table_body" is useful for jQuery to find this html element -->
     <tbody id=movie_table_body></tbody>
 </table>
+
+<div id="pagination"></div>
 
 
 </body>

@@ -20,6 +20,8 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.lang.Math.ceil;
+
 
 // Declaring a WebServlet called MovieServlet, which maps to url "/api/movies"
 @WebServlet(name = "MovieServlet", urlPatterns = "/api/movies")
@@ -56,7 +58,7 @@ public class MovieServlet extends HttpServlet {
         String N = request.getParameter("N");
         String genreId = request.getParameter("genre_id");
         String title_letter = request.getParameter("title_letter");
-
+        String page = request.getParameter("page");
         // Get a connection from dataSource and let resource manager close the connection after usage.
         try (Connection conn = dataSource.getConnection()) {
             // Declare our statement
@@ -65,6 +67,7 @@ public class MovieServlet extends HttpServlet {
             // old query : "SELECT * FROM movies as M, ratings as R WHERE M.id = R.movieId";
             // added duplicates in search...
             String query = "SELECT M.id, M.title, M.year, M.director, R.rating, R.numVotes, "
+                    + "COUNT(*) OVER () AS total_count, "  // This provides the total count across all rows
                     + "GROUP_CONCAT(GIM.genreId) AS genre_ids "
                     + "FROM movies AS M "
                     + "JOIN ratings AS R ON M.id = R.movieId "
@@ -118,6 +121,10 @@ public class MovieServlet extends HttpServlet {
 
             if(N != null && !N.isEmpty()) {
                 query += " LIMIT " + N;
+
+                if (page != null && !page.isEmpty()) {
+                    query += " OFFSET " + (Integer.parseInt(page) - 1) * Integer.parseInt(N);
+                }
             }
 
                 // Perform the query
@@ -126,7 +133,9 @@ public class MovieServlet extends HttpServlet {
             JsonArray jsonArray = new JsonArray();
 
             // Iterate through each row of rs
+            int total_count = 0;
             while (rs.next()) {
+                total_count = rs.getInt("total_count");
                 String movie_id = rs.getString("id");
                 String movie_title = rs.getString("title");
                 int movie_year = rs.getInt("year");
@@ -186,6 +195,14 @@ public class MovieServlet extends HttpServlet {
             }
             rs.close();
             statement.close();
+
+            // add max_pages to result
+            if(N != null && !N.isEmpty()) {
+                int max_pages = total_count/Integer.parseInt(N);
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("max_pages", max_pages);
+                jsonArray.add(jsonObject);
+            }
 
             // Log to localhost log
             request.getServletContext().log("getting " + jsonArray.size() + " results");
