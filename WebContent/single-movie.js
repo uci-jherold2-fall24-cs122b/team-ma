@@ -46,7 +46,6 @@ function handleResult(resultData) {
     let movieTableBodyElement = jQuery("#movie_table_body");
     movieTableBodyElement.empty();
 
-
     let stars = resultData[0]["stars"];
     if (stars && Array.isArray(stars)) {
         for (let j = 0; j < stars.length; j++) {

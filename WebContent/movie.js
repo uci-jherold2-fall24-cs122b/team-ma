@@ -1,10 +1,19 @@
 function sendToServlet(title, year, director, star, genre_id, sort, N, page){
     // Makes the HTTP GET request and registers on success callback function handleMovieResult
+    console.log("AA");
+    let data = {};
+    if(genre_id === undefined){
+        data = { title, year, director, star, sort, N, page };
+    }
+    else{
+        data = { genre_id, sort, N, page };
+
+    }
     jQuery.ajax({
         dataType: "json",
         method: "GET",
         url: "api/movies",
-        data: { title, year, director, star, genre_id, sort, N, page }, // Send parameters to the server
+        data: data, // Send parameters to the server
         success: handleMovieResult,
         error: (jqXHR, textStatus, errorThrown) => {
             console.error("AJAX error: ", textStatus, errorThrown);
