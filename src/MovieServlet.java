@@ -45,7 +45,7 @@ public class MovieServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+        System.out.println("Get request");
 
 
         response.setContentType("application/json"); // Response mime type
@@ -65,6 +65,15 @@ public class MovieServlet extends HttpServlet {
         String page = request.getParameter("page");
         // Get a connection from dataSource and let resource manager close the connection after usage.
         try (Connection conn = dataSource.getConnection()) {
+
+            // save url in session
+            System.out.println("URL TEMP");
+            HttpSession session = request.getSession();
+            String currentUrl = request.getQueryString();
+            System.out.println(currentUrl);
+            session.setAttribute("movieListUrl", currentUrl);
+
+            
             // Declare our statement
             Statement statement = conn.createStatement();
 
@@ -177,6 +186,8 @@ public class MovieServlet extends HttpServlet {
 
                     stars.add(starObject);
                 }
+                starsRs.close();
+                starsStatement.close();
 
                 jsonObject.add("stars", stars);
 
@@ -193,6 +204,8 @@ public class MovieServlet extends HttpServlet {
                     String genreName = genresRs.getString("name");
                     genres.add(genreName);
                 }
+                genresRs.close();
+                genresStatement.close();
                 jsonObject.add("genres", genres);
 
                 jsonArray.add(jsonObject);
@@ -200,19 +213,13 @@ public class MovieServlet extends HttpServlet {
             rs.close();
             statement.close();
 
-            // add max_pages to result
+//            // add max_pages to result
             if(N != null && !N.isEmpty()) {
                 int max_pages = (total_count + Integer.parseInt(N) - 1)/Integer.parseInt(N);
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("max_pages", max_pages);
                 jsonArray.add(jsonObject);
             }
-
-            // save url in session
-            HttpSession session = request.getSession();
-            String currentUrl = request.getQueryString();
-            System.out.println(currentUrl);
-            session.setAttribute("movieListUrl", currentUrl);
 
             // Log to localhost log
             request.getServletContext().log("getting " + jsonArray.size() + " results");
