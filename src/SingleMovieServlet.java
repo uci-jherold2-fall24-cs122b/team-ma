@@ -8,6 +8,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -127,6 +129,13 @@ public class SingleMovieServlet extends HttpServlet {
             }
             rs.close();
             statement.close();
+
+            // get url of last movie list
+            HttpSession session = request.getSession();
+            String movieListUrl = (String) session.getAttribute("movieListUrl");
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("movie_list_url", movieListUrl);
+            jsonArray.add(jsonObject);
 
             // Write JSON string to output
             out.write(jsonArray.toString());

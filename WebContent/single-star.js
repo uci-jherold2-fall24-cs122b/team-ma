@@ -89,6 +89,9 @@ function handleResult(resultData) {
         starTableBodyElement.append("<tr><td colspan='3'>No movies found.</td></tr>"); // Fallback message for no movies
     }
 
+    const movieListUrl = document.getElementById('movie-list-url');
+    movieListUrl.href = "movie.html?" + resultData[1]["movie_list_url"];
+
     // Append the row created to the table body, which will refresh the page
     //starTableBodyElement.append(rowHTML);
 }

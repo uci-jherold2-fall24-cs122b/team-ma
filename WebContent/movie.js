@@ -1,10 +1,28 @@
-
+function sendToServlet(title, year, director, star, genre_id, sort, N, page){
+    // Makes the HTTP GET request and registers on success callback function handleMovieResult
+    jQuery.ajax({
+        dataType: "json",
+        method: "GET",
+        url: "api/movies",
+        data: { title, year, director, star, genre_id, sort, N, page }, // Send parameters to the server
+        success: handleMovieResult,
+        error: (jqXHR, textStatus, errorThrown) => {
+            console.error("AJAX error: ", textStatus, errorThrown);
+        }
+    });
+}
 /**
  * Handles the data returned by the API, read the jsonObject and populate data into html elements
  * @param resultData jsonObject
  */
 function handleMovieResult(resultData) {
     console.log("handleMovieResult: populating movie table from resultData");
+    const params = new URLSearchParams(window.location.search);
+    const sort = params.get("sort");
+    const N = params.get("N");
+
+    jQuery("#sort").val(sort);
+    jQuery("#N").val(N);
 
     // Populate the movie table
     // Find the empty table body by id "movie_table_body"
@@ -101,24 +119,25 @@ function handlePagination(max_pages) {
     const current_page = parseInt(params.get("page"));
     if(current_page > 1){
         paginationDiv.innerHTML = '';
-
         const prevButton = document.createElement('button');
         prevButton.textContent = 'Prev';
-        prevButton.onclick = () => sortMoviesFunc(current_page - 1);  // Pass the new page number
+        prevButton.onclick = () => editMovieList(current_page - 1);  // Pass the new page number
         paginationDiv.appendChild(prevButton);
     }
 
     if(current_page < max_pages){
         const nextButton = document.createElement('button');
         nextButton.textContent = 'Next';
-        nextButton.onclick = () => sortMoviesFunc(current_page + 1);  // Pass the new page number
+        nextButton.onclick = () => editMovieList(current_page + 1);  // Pass the new page number
         paginationDiv.appendChild(nextButton);
 
     }
+
+
 }
 
-function sortMoviesFunc(page = '1'){
-    console.log("edit result params");
+function editMovieList(page){
+    console.log("edit result params, page: ", page);
     let sort = document.getElementById("sort").value;
     let N = document.getElementById("N").value;
     const params = new URLSearchParams(window.location.search);
@@ -131,34 +150,19 @@ function sortMoviesFunc(page = '1'){
     const genre_id = params.get("genre_id");
     const title_letter = params.get("title_letter");
 
-    if(sort){
-        params.set("sort", sort);
-    } else{
-        sort = params.get("sort");
-    }
+    params.set("sort", sort);
+    params.set("N", N);
 
-    if(N){
-        params.set("N", N);
-    } else{
-        N = params.get("N");
+    if(page === undefined){
+        page = params.get("page");
     }
-
-    params.set("page", page);
+    params.set("page", (String)(page));
+    console.log("params", params.get("page"));
 
     // Update the URL without reloading the page
     window.history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`);
+    sendToServlet(title, year, director, star, genre_id, sort, N, page);
 
-// Makes the HTTP GET request and registers on success callback function handleMovieResult
-    jQuery.ajax({
-        dataType: "json",
-        method: "GET",
-        url: "api/movies",
-        data: { title, year, director, star, genre_id, sort, N, page }, // Send parameters to the server
-        success: handleMovieResult,
-        error: (jqXHR, textStatus, errorThrown) => {
-            console.error("AJAX error: ", textStatus, errorThrown);
-        }
-    });
 
 }
 
@@ -177,16 +181,7 @@ const title_letter = params.get("title_letter");
 
 const page = params.get("page");
 
-// // Makes the HTTP GET request and registers on success callback function handleMovieResult
-jQuery.ajax({
-    dataType: "json",
-    method: "GET",
-    url: "api/movies",
-    data: { title, year, director, star, genre_id , title_letter , sort, N, page}, // Send parameters to the server
-    success: handleMovieResult,
-    error: (jqXHR, textStatus, errorThrown) => {
-        console.error("AJAX error: ", textStatus, errorThrown);
-    }
-});
+sendToServlet(title, year, director, star, genre_id, sort, N, page);
+
 
 

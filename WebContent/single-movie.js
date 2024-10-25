@@ -61,6 +61,8 @@ function handleResult(resultData) {
         movieTableBodyElement.append("<tr><td colspan='3'>No stars found.</td></tr>"); // Fallback message for no movies
     }
 
+    const movieListUrl = document.getElementById('movie-list-url');
+    movieListUrl.href = "movie.html?" + resultData[1]["movie_list_url"];
 
 }
 

@@ -10,6 +10,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -43,6 +45,8 @@ public class MovieServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+
 
         response.setContentType("application/json"); // Response mime type
 
@@ -203,6 +207,12 @@ public class MovieServlet extends HttpServlet {
                 jsonObject.addProperty("max_pages", max_pages);
                 jsonArray.add(jsonObject);
             }
+
+            // save url in session
+            HttpSession session = request.getSession();
+            String currentUrl = request.getQueryString();
+            System.out.println(currentUrl);
+            session.setAttribute("movieListUrl", currentUrl);
 
             // Log to localhost log
             request.getServletContext().log("getting " + jsonArray.size() + " results");
