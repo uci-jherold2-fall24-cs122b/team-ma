@@ -29,9 +29,7 @@ function handleMovieResult(resultData) {
     let movieTableBodyElement = jQuery("#movie_table_body");
     movieTableBodyElement.empty();
     let uniqueMovies = new Set();
-
-    console.log(resultData);
-
+    
     // Iterate through resultData
     for (let i = 0; i < resultData.length - 1; i++) {
         let movieId = resultData[i]['movie_id'];
@@ -121,14 +119,21 @@ function handlePagination(max_pages) {
         paginationDiv.innerHTML = '';
         const prevButton = document.createElement('button');
         prevButton.textContent = 'Prev';
-        prevButton.onclick = () => editMovieList(current_page - 1);  // Pass the new page number
+        prevButton.onclick = () => {
+            editMovieList(current_page - 1);
+            window.scrollTo(0, 0);  // Scroll to the top
+        }  // Pass the new page number
         paginationDiv.appendChild(prevButton);
     }
 
     if(current_page < max_pages){
         const nextButton = document.createElement('button');
         nextButton.textContent = 'Next';
-        nextButton.onclick = () => editMovieList(current_page + 1);  // Pass the new page number
+        nextButton.onclick = () => {
+            editMovieList(current_page + 1);
+            window.scrollTo(0, 0);  // Scroll to the top
+
+        }  // Pass the new page number
         paginationDiv.appendChild(nextButton);
 
     }

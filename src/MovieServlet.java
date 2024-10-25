@@ -202,7 +202,7 @@ public class MovieServlet extends HttpServlet {
 
             // add max_pages to result
             if(N != null && !N.isEmpty()) {
-                int max_pages = total_count/Integer.parseInt(N);
+                int max_pages = (total_count + Integer.parseInt(N) - 1)/Integer.parseInt(N);
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("max_pages", max_pages);
                 jsonArray.add(jsonObject);
