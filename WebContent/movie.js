@@ -29,7 +29,7 @@ function handleMovieResult(resultData) {
     let movieTableBodyElement = jQuery("#movie_table_body");
     movieTableBodyElement.empty();
     let uniqueMovies = new Set();
-    
+
     // Iterate through resultData
     for (let i = 0; i < resultData.length - 1; i++) {
         let movieId = resultData[i]['movie_id'];

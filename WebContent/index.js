@@ -37,7 +37,8 @@ function handleSessionData(resultDataString) {
             let currentRow = genreTableBodyElement.find("tr").last();
 
             // Create the cell with the genre link
-            const cellHTML = "<td>" + '<a href=movie.html?genre_id=' + genres[j]['genre_id'] + '>' +
+            const cellHTML = "<td>" + '<a href=movie.html?genre_id=' + genres[j]['genre_id'] +
+                '&sort=0&N=10&page=1' + '>' +
                 genres[j]["genre_name"] +     // display genre_name for the link text
                 '</a>' + "</td>";
 
