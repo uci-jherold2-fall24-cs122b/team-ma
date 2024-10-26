@@ -108,6 +108,7 @@ public class MovieServlet extends HttpServlet {
             if (title_letter != null && !title_letter.isEmpty()) {
                 if (title_letter.equals("*")) {
                     //query += " AND LOWER(m.title) REGEXP '^[^A-Za-z0-9]';";
+                    query += " AND LOWER(m.title) REGEXP '^[^a-z0-9]'";
                     //need for non alphanumeical
                 } else {
                     query += " AND LOWER(m.title) LIKE '" + title_letter.toLowerCase() + "%'";

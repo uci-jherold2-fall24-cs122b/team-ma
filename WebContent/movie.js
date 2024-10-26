@@ -1,8 +1,8 @@
-function sendToServlet(title, year, director, star, genre_id, sort, N, page){
+function sendToServlet(title, year, director, star, genre_id, title_letter, sort, N, page){
     // Makes the HTTP GET request and registers on success callback function handleMovieResult
     let data = {};
     if(genre_id === null){
-        data = { title, year, director, star, sort, N, page };
+        data = { title, year, director, star, title_letter, sort, N, page };
     }
     else{
         data = { genre_id, sort, N, page };
@@ -25,6 +25,7 @@ function sendToServlet(title, year, director, star, genre_id, sort, N, page){
  */
 function handleMovieResult(resultData) {
     console.log("handleMovieResult: populating movie table from resultData");
+    console.log(resultData);
     const params = new URLSearchParams(window.location.search);
     const sort = params.get("sort");
     const N = params.get("N");
@@ -180,6 +181,7 @@ function editMovieList(page){
 }
 
 // Extract query parameters
+console.log("extracting query params")
 const params = new URLSearchParams(window.location.search);
 const title = params.get("title");
 const year = params.get("year");
@@ -194,7 +196,7 @@ const title_letter = params.get("title_letter");
 
 const page = params.get("page");
 
-sendToServlet(title, year, director, star, genre_id, sort, N, page);
+sendToServlet(title, year, director, star, genre_id, title_letter, sort, N, page);
 
 
 
