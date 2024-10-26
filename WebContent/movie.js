@@ -85,14 +85,45 @@ function handleMovieResult(resultData) {
         }
         rowHTML += "</th>";
         rowHTML += "<th>" + resultData[i]["movie_rating"] + "</th>";
+
+        rowHTML += "<th><button class='add-to-cart' data-id='" + movieId +
+            "' data-title='" + resultData[i]["movie_title"] +
+            "'>Add to Cart</button></th>";
         rowHTML += "</tr>";
 
         // Append the row created to the table body, which will refresh the page
         movieTableBodyElement.append(rowHTML);
     }
 
+    $(document).on("click", ".add-to-cart", function () {
+        const movieId = $(this).data("id");
+        const movieTitle = $(this).data("title");
+
+        // Call function to add item to cart
+        addToCart(movieId, movieTitle,  1); // Quantity 1 as default
+    });
     console.log("max pages: ", resultData[resultData.length-1]["max_pages"]);
     handlePagination(resultData[resultData.length-1]["max_pages"]);
+}
+
+function addToCart(movieId, movieTitle, quantity) {
+    $.ajax({
+        type: "POST",
+        url: "api/cart",
+        data: {
+            movieId: movieId,
+            movieTitle: movieTitle,
+            quantity: quantity
+        },
+        success: (response) => {
+            console.log("Movie added to cart:", response);
+            alert(movieTitle + " has been added to your cart!");
+        },
+        error: (jqXHR, textStatus, errorThrown) => {
+            console.error("Failed to add movie to cart:", textStatus, errorThrown);
+            alert("Failed to add movie to cart. Please try again.");
+        }
+    });
 }
 
 function handleSearchInfo(searchEvent) {
