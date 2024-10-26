@@ -7,8 +7,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
 
 
 @WebServlet(name = "CartServlet", urlPatterns = "/api/cart")
@@ -34,8 +32,6 @@ public class CartServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
-        String sessionId = session.getId();
-        long lastAccessTime = session.getLastAccessedTime();
 
         JsonArray cartItems = (JsonArray) session.getAttribute("cartItems");
         if (cartItems == null) {
@@ -68,6 +64,7 @@ public class CartServlet extends HttpServlet {
             newItem.addProperty("movieId", movieId);
             newItem.addProperty("movieTitle", movieTitle);
             newItem.addProperty("quantity", 1);
+            newItem.addProperty("price", (int)(Math.random() * (4) + 2));
             cartItems.add(newItem);
         }
 

@@ -98,22 +98,24 @@ function handleMovieResult(resultData) {
     $(document).on("click", ".add-to-cart", function () {
         const movieId = $(this).data("id");
         const movieTitle = $(this).data("title");
+        const price = $(this).data("price");
 
         // Call function to add item to cart
-        addToCart(movieId, movieTitle,  1); // Quantity 1 as default
+        addToCart(movieId, movieTitle,  1, price); // Quantity 1 as default
     });
     console.log("max pages: ", resultData[resultData.length-1]["max_pages"]);
     handlePagination(resultData[resultData.length-1]["max_pages"]);
 }
 
-function addToCart(movieId, movieTitle, quantity) {
+function addToCart(movieId, movieTitle, quantity, price) {
     $.ajax({
         type: "POST",
         url: "api/cart",
         data: {
             movieId: movieId,
             movieTitle: movieTitle,
-            quantity: quantity
+            quantity: quantity,
+            price: price
         },
         success: (response) => {
             console.log("Movie added to cart:", response);
