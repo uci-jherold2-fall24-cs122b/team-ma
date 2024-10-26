@@ -1,11 +1,14 @@
 function sendToServlet(title, year, director, star, genre_id, title_letter, sort, N, page){
     // Makes the HTTP GET request and registers on success callback function handleMovieResult
     let data = {};
-    if(genre_id === null){
-        data = { title, year, director, star, title_letter, sort, N, page };
+    if(genre_id !== null){
+        data = { genre_id, sort, N, page };
+    }
+    else if(title_letter !== null){
+        data = { title_letter, sort, N, page };
     }
     else{
-        data = { genre_id, sort, N, page };
+        data = { title, year, director, star, sort, N, page };
     }
     console.log("sending: ", data);
     jQuery.ajax({
@@ -208,7 +211,7 @@ function editMovieList(page){
 
     // Update the URL without reloading the page
     window.history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`);
-    sendToServlet(title, year, director, star, genre_id, sort, N, page);
+    sendToServlet(title, year, director, star, genre_id, title_letter, sort, N, page);
 
 
 }
