@@ -73,7 +73,7 @@ public class MovieServlet extends HttpServlet {
             System.out.println(currentUrl);
             session.setAttribute("movieListUrl", currentUrl);
 
-            
+
             // Declare our statement
             Statement statement = conn.createStatement();
 

@@ -25,16 +25,13 @@
      otherwise the url is relative to the root path-->
 <script src="movie.js"></script>
 
-<button id="home-button">
-    <a href="index.html">
-        <span class="button_top">Home</span>
-    </a>
-</button>
+<a id="home-button" class="btn button_top" href="index.html">
+    Home
+</a>
 
 <h1>Movie List</h1>
 <form action="#" id="search" method="get">
-    <label>Search for a Movie: </label>
-    <br>
+
     <label>Title:
         <input name="title" type="text">
     </label>
@@ -75,7 +72,7 @@
 
 
 <!-- Id "movie_table" is useful for jQuery to find the html element with id, class here is mapping to Bootstrap defined class CSS -->
-<table id=movie_table class="table table-striped">
+<table id=movie_table class="table mx-auto">
     <!-- Create a table header -->
     <thead>
     <tr>
