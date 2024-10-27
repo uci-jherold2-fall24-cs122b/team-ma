@@ -46,11 +46,11 @@ CREATE TABLE customers (
     id INTEGER AUTO_INCREMENT PRIMARY KEY,
     firstName VARCHAR(50) NOT NULL,
     lastName VARCHAR(50) NOT NULL,
-    ccld VARCHAR(20),
+    ccId VARCHAR(20),
     address VARCHAR(200) NOT NULL,
     email VARCHAR(50) NOT NULL,
     password VARCHAR(20) NOT NULL,
-    FOREIGN KEY (ccld) REFERENCES creditcards(id)
+    FOREIGN KEY (ccId) REFERENCES creditcards(id)
 );
 
 CREATE TABLE sales (
