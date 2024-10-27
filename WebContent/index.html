@@ -9,32 +9,25 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
   <title>Fablix</title>
 </head>
 <body>
-  <!-- Shopping Cart Button -->
-  <a href="cart.html" class="cart-button">
-    🛒 Cart
+ <a href="cart.html" class="btn button_top cart-button">
+    <i class="fas fa-shopping-cart"></i> Cart
   </a>
-Welcome to Fablix!
+ <p> Welcome to Fablix! </p>
 <p id="sessionID"></p>
-<!--<p id="lastAccessTime"></p>-->
-<!--<form ACTION="#" id="cart" METHOD="post">-->
-<!--  <label>Item Purchased</label>-->
-<!--  <br>-->
-<!--  <label>-->
-<!--    <input name="item" required="required" type="text">-->
-<!--  </label>-->
-<!--  <input type="submit" VALUE="add">-->
-<!--</form>-->
-<!--<div id="item_list"></div>-->
+<p id="lastAccessTime"></p>
+ <h2>Search</h2>
 
 <form action="movie.html" id="search" method="get">
   <label>Title:
     <input name="title" type="text">
   </label>
   <label>Year:
-    <input name="year" type="text">
+    <input name="year" type="number">
   </label>
   <label>Director:
     <input name="director" type="text">
@@ -45,22 +38,23 @@ Welcome to Fablix!
   <input type="hidden" name="sort" value="0">
   <input type="hidden" name="N" value="10">
   <input type="hidden" name="page" value="1">
-
-  <input type="submit" VALUE="Search">
-</form>
+  <button type="submit" class = "btn button_top">
+    <i class="fa fa-search"></i> Search
+  </button></form>
+  <div class="custom-line"></div>
 
 <!-- Side by Side Layout using Bootstrap Grid -->
 <div class="container mt-4">
-  <div class="row">
+  <div class="row text-center">
     <!-- Browse by Genre -->
-    <div class="col-md-6 d-flex flex-column text-align-center">
+    <div class="col-md-12 mb-4 d-flex flex-column text-center">
       <h2>Browse by Genre</h2>
       <table id="genre_table" class="table-home">
         <tbody id="genre_table_body"></tbody>
       </table>
     </div>
     <!-- Browse by Title -->
-    <div class="col-md-6 d-flex flex-column text-align-center">
+    <div class="col-md-12 d-flex flex-column text-center">
       <h2>Browse by Title</h2>
       <table id="alpha_table" class="table-home">
         <tbody id="alpha_table_body"></tbody>

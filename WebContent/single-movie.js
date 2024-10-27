@@ -33,12 +33,26 @@ function handleResult(resultData) {
     console.log(resultData[0]["movie_title"]);
 
     // append two html <p> created to the h3 body, which will refresh the page
-    movieInfoElement.append("<p>Movie Title: " + resultData[0]["movie_title"] +"</p>" +
+    movieInfoElement.append("<h2>" + resultData[0]["movie_title"] +"</h2>" +
         "<p>Release Year: " + resultData[0]["movie_year"] +"</p>" +
         "<p>Director: " + resultData[0]["movie_director"] +"</p>" +
         "<p>Genres: " + resultData[0]["movie_genres"].join(', ') + "</p>" +
         "<p>Rating: " + resultData[0]["movie_rating"] +"</p>");
 
+    let addToCartElement = jQuery("#add-to-cart");
+    addToCartElement.empty();
+    addToCartElement.append("<button class='add-to-cart btn button_top' data-id='" + movieId +
+        "' data-title='" + resultData[0]["movie_title"] +
+        "'>Add to Cart</button>");
+
+    $(document).on("click", ".add-to-cart", function () {
+        const movieId = $(this).data("id");
+        const movieTitle = $(this).data("title");
+        const price = $(this).data("price");
+
+        // Call function to add item to cart
+        addToCart(movieId, movieTitle,  1, price); // Quantity 1 as default
+    });
     console.log("handleResult: populating movie table from resultData");
 
     // Populate the star table
@@ -65,6 +79,28 @@ function handleResult(resultData) {
 
 }
 
+
+
+function addToCart(movieId, movieTitle, quantity, price) {
+    $.ajax({
+        type: "POST",
+        url: "api/cart",
+        data: {
+            movieId: movieId,
+            movieTitle: movieTitle,
+            quantity: quantity,
+            price: price
+        },
+        success: (response) => {
+            console.log("Movie added to cart:", response);
+            alert(movieTitle + " has been added to your cart!");
+        },
+        error: (jqXHR, textStatus, errorThrown) => {
+            console.error("Failed to add movie to cart:", textStatus, errorThrown);
+            alert("Failed to add movie to cart. Please try again.");
+        }
+    });
+}
 /**
  * Once this .js is loaded, following scripts will be executed by the browser\
  */

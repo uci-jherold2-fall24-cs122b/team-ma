@@ -54,7 +54,7 @@ function handleSessionData(resultDataString) {
     console.log("populating alphabetical title table");
 
     for (let j = 0; j < 10; j++) {
-        if (j % 5 === 0) {
+        if (j % 10 === 0) {
             // Start a new row for every three genres
             alphaTableBodyElement.append("<tr></tr>");
         }
@@ -73,7 +73,7 @@ function handleSessionData(resultDataString) {
         currentRow.append(cellHTML);
     }
     for (let i = 0; i < 27; i++) {
-        if (i % 5 === 0) {
+        if (i % 10 === 0) {
             // Start a new row for every three genres
             alphaTableBodyElement.append("<tr></tr>");
         }

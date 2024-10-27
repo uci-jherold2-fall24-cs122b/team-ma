@@ -52,7 +52,7 @@ function handleResult(resultData) {
     //starInfoElement.append("<p>Star Name: " + resultData[0]["star_name"] + "</p>");
 
     if (resultData[0]) {
-        starInfoElement.append("<p>Star Name: " + resultData[0]["star_name"] + "</p>");
+        starInfoElement.append("<h2>" + resultData[0]["star_name"] + "</h2>");
         console.log("Star DOB: ", resultData[0]["star_dob"]);
 
         const starDob = (resultData[0]["star_dob"] !== null) ? resultData[0]["star_dob"] : "N/A";
@@ -67,7 +67,6 @@ function handleResult(resultData) {
     // Find the empty table body by id "star_table_body"
     let starTableBodyElement = jQuery("#star_table_body");
     starTableBodyElement.empty();
-
 
     // Concatenate the html tags with resultData jsonObject to create table rows
     let movies = resultData[0]["movies"];

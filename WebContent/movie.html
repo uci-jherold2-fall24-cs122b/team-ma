@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <title>Movie List</title>
 </head>
 <body>
@@ -25,31 +27,37 @@
      otherwise the url is relative to the root path-->
 <script src="movie.js"></script>
 
+<a href="cart.html" class="btn button_top cart-button">
+    <i class="fas fa-shopping-cart"></i> Cart
+</a>
 <a id="home-button" class="btn button_top" href="index.html">
     Home
 </a>
 
-<h1>Movie List</h1>
+<h2>Movie Results</h2>
 <form action="#" id="search" method="get">
 
     <label>Title:
         <input name="title" type="text">
     </label>
     <label>Year:
-        <input name="year" type="text">
+        <input name="year" type="number">
     </label>
     <label>Director:
         <input name="director" type="text">
     </label>
-    <label>Star's Name
+    <label>Star's Name:
         <input name="star" type="text">
     </label>
     <input type="hidden" name="sort" value="0">
     <input type="hidden" name="N" value="10">
     <input type="hidden" name="page" value="1">
-    <input type="submit" VALUE="Search">
+    <button type="submit" class = "btn button_top">
+        <i class="fa fa-search"></i> Search
+    </button>
+
 </form>
-<label for="sort">Sort by:</label>
+<label for="sort">Sort by: </label>
 <select id="sort" onchange="editMovieList()">
     <option value="0">Rating desc, Title asc</option>
     <option value="1">Rating desc, Title desc</option>
@@ -61,7 +69,7 @@
     <option value="7">Title desc, Rating desc</option>
 </select>
 
-<label for="N">Sort by:</label>
+<label for="N"># per page: </label>
 <select id="N" onchange="editMovieList()">
     <option value="10">10</option>
     <option value="25">25</option>

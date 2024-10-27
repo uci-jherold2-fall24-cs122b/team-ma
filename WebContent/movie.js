@@ -89,7 +89,7 @@ function handleMovieResult(resultData) {
         rowHTML += "</th>";
         rowHTML += "<th>" + resultData[i]["movie_rating"] + "</th>";
 
-        rowHTML += "<th><button class='add-to-cart' data-id='" + movieId +
+        rowHTML += "<th><button class='add-to-cart btn button_top' data-id='" + movieId +
             "' data-title='" + resultData[i]["movie_title"] +
             "'>Add to Cart</button></th>";
         rowHTML += "</tr>";

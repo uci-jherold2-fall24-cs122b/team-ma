@@ -67,7 +67,6 @@ public class MovieServlet extends HttpServlet {
         try (Connection conn = dataSource.getConnection()) {
 
             // save url in session
-            System.out.println("URL TEMP");
             HttpSession session = request.getSession();
             String currentUrl = request.getQueryString();
             System.out.println(currentUrl);
