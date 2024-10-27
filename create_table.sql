@@ -49,6 +49,7 @@ CREATE TABLE IF NOT EXISTS customers(
     email VARCHAR(50) NOT NULL,
     password VARCHAR(20) NOT NULL,
     FOREIGN KEY (ccId) REFERENCES creditcards(id)
+    FOREIGN KEY (ccId) REFERENCES creditcards(id)
 );
 
 CREATE TABLE IF NOT EXISTS sales(
