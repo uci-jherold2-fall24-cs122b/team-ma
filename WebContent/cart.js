@@ -8,7 +8,7 @@ function displayCart(cart_content) {
 
         if (cart_content.length > 0) {  // Check if the array has items
             cart_content.forEach(item => {
-                console.log("here");
+
                 console.log(JSON.stringify(item));
                 const rowHTML = `
                     <tr>
@@ -53,6 +53,7 @@ function displayCart(cart_content) {
             const movieId = $(this).data("movie-id");
             deleteItem(movieId);
         });
+
     }
 
     function updateQuantity(movieId, change) {
@@ -88,3 +89,6 @@ $.ajax({
         console.error("AJAX error: ", textStatus, errorThrown);
     }
 });
+
+
+

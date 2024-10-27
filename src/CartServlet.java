@@ -14,8 +14,6 @@ public class CartServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
-        String sessionId = session.getId();
-        long lastAccessTime = session.getLastAccessedTime();
 
         JsonArray cartItems = (JsonArray) session.getAttribute("cartItems");
         if (cartItems == null) {

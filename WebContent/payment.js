@@ -1,3 +1,4 @@
+
 let payment_form = $("#payment_form");
 
 /**
@@ -15,7 +16,7 @@ function handlePaymentResult(resultDataString) {
     if (resultDataJson["status"] === "success") {
         window.location.replace("confirmation.html");
     } else {
-        // If login fails, the web page will display
+        // If payment fails, the web page will display
         // error messages on <div> with id "login_error_message"
         console.log("show error message");
         console.log(resultDataJson["message"]);
@@ -35,6 +36,8 @@ function submitPaymentForm(formSubmitEvent) {
      * event handler when the event is triggered.
      */
     formSubmitEvent.preventDefault();
+
+
 
     $.ajax(
         "api/payment", {

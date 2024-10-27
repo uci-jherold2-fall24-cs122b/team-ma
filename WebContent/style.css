@@ -37,6 +37,7 @@ button:hover {
     transform: scale(1.05); /* Increases button size by 10% */
 }
 .button_top {
+    margin:10px;
     border-radius: 8px;
     background-color: #7698b5;
     color: white;

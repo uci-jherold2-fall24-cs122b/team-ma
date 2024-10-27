@@ -10,7 +10,7 @@
 </head>
 <body>
 <a id="home-button" class="btn button_top" href="index.html">
-  Home
+  <i class="fas fa-home"></i> Home
 </a>
 
 <a id="movie-list-url" class="btn button_top" href="#">
@@ -20,26 +20,28 @@
 <form id="payment_form" method="post" action="#">
   <label><b>First Name</b></label>
   <label>
-    <input name="firstname" placeholder="Enter First Name" type="text">
+    <input name="firstname" placeholder="Enter First Name" type="text" required>
   </label>
   <br>
   <label><b>Last Name</b></label>
   <label>
-    <input name="lastname" placeholder="Enter Last Name" type="text">
+    <input name="lastname" placeholder="Enter Last Name" type="text" required>
   </label>
   <br>
   <label><b>Credit Card Number</b></label>
   <label>
-    <input name="ccnumber" placeholder="Enter Credit Card Number" type="text">
+    <input name="ccnumber" placeholder="Enter Credit Card Number" type="text" required>
   </label>
   <br>
   <label><b>Expiration Date</b></label>
   <label>
-    <input name="expiration" placeholder="Enter Expiration Date" type="text">
+    <input name="expiration" type="date" placeholder="Enter Expiration Date" required>
   </label>
   <br>
   <input type="submit" value="Pay">
 </form>
+<div id="login_error_message"></div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!-- include our own JS file -->
 <script src="./payment.js"></script>
