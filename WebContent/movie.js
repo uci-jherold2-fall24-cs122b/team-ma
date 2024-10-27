@@ -174,6 +174,7 @@ function handlePagination(max_pages) {
     if(current_page < max_pages){
         const nextButton = document.createElement('button');
         nextButton.textContent = 'Next';
+        nextButton.className = 'btn button_top';
         nextButton.onclick = () => {
             editMovieList(current_page + 1);
             window.scrollTo(0, 0);  // Scroll to the top

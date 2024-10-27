@@ -41,9 +41,10 @@ function handleResult(resultData) {
 
     let addToCartElement = jQuery("#add-to-cart");
     addToCartElement.empty();
-    addToCartElement.append("<button class='add-to-cart btn button_top' data-id='" + movieId +
-        "' data-title='" + resultData[0]["movie_title"] +
-        "'>Add to Cart</button>");
+    addToCartElement.append(`
+    <button class='add-to-cart btn button_top' data-id='${movieId}' data-title='${resultData[0]["movie_title"]}'>
+        <i class='fas fa-plus'></i> Add to Cart
+    </button>`);
 
     $(document).on("click", ".add-to-cart", function () {
         const movieId = $(this).data("id");

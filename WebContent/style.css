@@ -129,7 +129,7 @@ input[type="submit"]:hover {
 label {
     /*font-weight: bold;*/
     font-size: 1.1em;
-    margin: 7px;
+    margin-right: 7px;
 }
 
 
@@ -178,6 +178,7 @@ label {
 
 
 select {
+    margin-right: 7px;
     height: 25px;
     font-size: 1rem;
     color: #333;
