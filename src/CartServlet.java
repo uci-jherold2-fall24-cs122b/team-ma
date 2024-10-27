@@ -30,7 +30,6 @@ public class CartServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
-
         JsonArray cartItems = (JsonArray) session.getAttribute("cartItems");
         if (cartItems == null) {
             cartItems = new JsonArray();
@@ -62,10 +61,9 @@ public class CartServlet extends HttpServlet {
             newItem.addProperty("movieId", movieId);
             newItem.addProperty("movieTitle", movieTitle);
             newItem.addProperty("quantity", 1);
-            newItem.addProperty("price", (int)(Math.random() * (4) + 2));
+            newItem.addProperty("price", (int) (Math.random() * (4) + 2));
             cartItems.add(newItem);
         }
-
 
         // Write the response
         response.getWriter().print(cartItems.toString());

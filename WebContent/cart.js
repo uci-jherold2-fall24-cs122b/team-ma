@@ -14,7 +14,7 @@ function displayCart(cart_content) {
                     <tr>
                         <td>${item.movieTitle}</td>
                         <td>${item.quantity}</td>
-                        <td>${item.price}</td>
+                        <td>$${item.price.toFixed(2)}</td>
                         <td>
                             <button class="decrease-quantity" data-movie-id="${item.movieId}">-</button>
                             ${item.quantity}
@@ -65,6 +65,7 @@ function displayCart(cart_content) {
                 deleteItem(movieId);
             } else {
                 displayCart(cart_content);
+                postUpdatedCart();
             }
         }
     }
@@ -73,6 +74,24 @@ function displayCart(cart_content) {
         cart_content = cart_content.filter(item => item.movieId !== movieId);
 
         displayCart(cart_content);
+        postUpdatedCart();
+    }
+
+    function postUpdatedCart() {
+        $.ajax({
+            type: "POST",
+            url: "api/updatecart",
+            data: JSON.stringify(cart_content),  // Send updated cart content
+            contentType: "application/json",
+            success: (response) => {
+                console.log("Cart successfully updated.");
+
+                displayCart(response);
+            },
+            error: (jqXHR, textStatus, errorThrown) => {
+                console.error("AJAX error: ", textStatus, errorThrown);
+            }
+        });
     }
 
 }
