@@ -54,7 +54,7 @@ public class LoginServlet extends HttpServlet {
                     responseJsonObject.addProperty("message", "success");
                 }
                 else{
-                    responseJsonObject.addProperty("message", "Invalid login credentials");
+                    responseJsonObject.addProperty("message", "Invalid login. Try again.");
                 }
 
             } else {
@@ -63,7 +63,7 @@ public class LoginServlet extends HttpServlet {
                 // Log to localhost log
                 request.getServletContext().log("Login failed");
                 // sample error messages. in practice, it is not a good idea to tell user which one is incorrect/not exist.
-                responseJsonObject.addProperty("message", "Invalid login credentials");
+                responseJsonObject.addProperty("message", "Invalid login. Try again.");
             }
 
             response.getWriter().write(responseJsonObject.toString());

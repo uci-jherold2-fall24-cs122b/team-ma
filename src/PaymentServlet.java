@@ -106,7 +106,7 @@ public class PaymentServlet extends HttpServlet {
                     responseJsonObject.addProperty("status", "fail");
                     // Log to localhost log
                     request.getServletContext().log("Payment failed");
-                    responseJsonObject.addProperty("message", "Invalid payment credentials. Try again.");
+                    responseJsonObject.addProperty("message", "Invalid payment. Try again.");
 
 
                 }
@@ -117,7 +117,7 @@ public class PaymentServlet extends HttpServlet {
                 // Log to localhost log
                 request.getServletContext().log("Payment failed");
                 // sample error messages. in practice, it is not a good idea to tell user which one is incorrect/not exist.
-                responseJsonObject.addProperty("message", "Invalid payment credentials. Try again.");
+                responseJsonObject.addProperty("message", "Invalid payment. Try again.");
             }
 
             response.getWriter().write(responseJsonObject.toString());

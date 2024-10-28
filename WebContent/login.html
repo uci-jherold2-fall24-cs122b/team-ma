@@ -91,7 +91,7 @@
             justify-content: center;
             height: 100%;
             margin: auto;
-            width: 50%;
+            width: 80%;
 
         }
         #login_container {
@@ -99,6 +99,7 @@
             border-radius: 15px;
             padding: 20px;
             width: 350px;
+            height: 300px;
             margin: 0 auto;
             background-color: #f9f9f9;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -111,7 +112,8 @@
 <!-- Set the method to POST to avoid showing the username/password in the URL
      The default action is disabled to allow your own implementation. -->
 <div id = "login_container">
-<form id="login_form" method="post" action="#">
+
+    <form id="login_form" method="post" action="#">
     <label><b>Username</b></label>
     <label>
         <input name="username" placeholder="Enter Username" type="text">
@@ -121,12 +123,14 @@
     <label>
         <input name="password" placeholder="Enter Password" type="password">
     </label>
-    <br>
-    <button type="submit" class="btn button_top">
+
+        <div id="login_error_message" style = "height: 50px; color: red; text-align: center; "> </div>
+
+        <button type="submit" class="btn button_top">
         Login
     </button></form>
+
 </div>
-<div id="login_error_message" style = "color: red; text-align: center;"></div>
 
 <!-- include jQuery-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
