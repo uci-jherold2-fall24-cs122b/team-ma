@@ -8,15 +8,109 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
-    <title>Login to Fablix</title>
 
+    <title>Login to Fablix</title>
+    <style>
+
+        body {
+            position: relative;
+            align-items:center;
+            font-family: Inter, sans-serif; /* Change font to Georgia */
+            background-color: #94b4cf;
+            color: #333;
+            margin: 30px;
+        }
+        h2 {
+            text-align:center;
+            font-weight:bold;
+        }
+        h3 {
+            text-align: center;
+        }
+
+        button {
+            border-radius: 8px;
+            border: none;
+            background-color: #7698b5;
+            color: white;
+        }
+        button:hover {
+            transform: scale(1.05); /* Increases button size by 10% */
+        }
+        .button_top {
+            margin:10px;
+            border-radius: 8px;
+            background-color: #7698b5;
+            color: white;
+        }
+
+        .button_top:hover {
+            transform: scale(1.05); /* Increases button size by 10% */
+        }
+
+        input[type="text"] {
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            height: 25px;
+            padding: 10px;
+            width: 180px;
+            box-sizing: border-box;
+        }
+        input[type="password"] {
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            height: 25px;
+            padding: 10px;
+            width: 180px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            border-radius: 5px;
+            background-color: #658aa8;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #658aa8;
+        }
+
+        label {
+            font-size: 1.1em;
+            margin-right: 7px;
+        }
+
+        #login_form {
+            font-size: 1em;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            margin: auto;
+            width: 50%;
+
+        }
+        #login_container {
+            border: 2px solid #ccc;
+            border-radius: 15px;
+            padding: 20px;
+            width: 350px;
+            margin: 0 auto;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 
 </head>
 <body>
-<h2>Login to Fablix</h2>
+<h2 style="margin-top: 12%; margin-bottom: 25px; font-size: 2em;" >Login to Fablix</h2>
 <!-- Set the method to POST to avoid showing the username/password in the URL
      The default action is disabled to allow your own implementation. -->
+<div id = "login_container">
 <form id="login_form" method="post" action="#">
     <label><b>Username</b></label>
     <label>
@@ -28,10 +122,11 @@
         <input name="password" placeholder="Enter Password" type="password">
     </label>
     <br>
-    <input type="submit" value="Login">
-</form>
-
-<div id="login_error_message"></div>
+    <button type="submit" class="btn button_top">
+        Login
+    </button></form>
+</div>
+<div id="login_error_message" style = "color: red; text-align: center;"></div>
 
 <!-- include jQuery-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

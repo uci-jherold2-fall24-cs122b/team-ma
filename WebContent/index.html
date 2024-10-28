@@ -17,7 +17,7 @@
  <a href="cart.html" class="btn button_top cart-button">
     <i class="fas fa-shopping-cart"></i> Cart
   </a>
- <p> Welcome to Fablix! </p>
+ <h1 style = "font-style: italic"> Welcome to Fablix! </h1>
 <p id="sessionID"></p>
 <p id="lastAccessTime"></p>
  <h2>Search</h2>
@@ -43,25 +43,25 @@
   </button></form>
   <div class="custom-line"></div>
 
-<!-- Side by Side Layout using Bootstrap Grid -->
-<div class="container mt-4">
-  <div class="row text-center">
-    <!-- Browse by Genre -->
-    <div class="col-md-12 mb-4 d-flex flex-column text-center">
-      <h2>Browse by Genre</h2>
-      <table id="genre_table" class="table-home">
-        <tbody id="genre_table_body"></tbody>
-      </table>
-    </div>
-    <!-- Browse by Title -->
-    <div class="col-md-12 d-flex flex-column text-center">
-      <h2>Browse by Title</h2>
-      <table id="alpha_table" class="table-home">
-        <tbody id="alpha_table_body"></tbody>
-      </table>
-    </div>
-  </div>
-</div>
+<!-- Side by Side Layout using Bootstrap Grid --><div class="container mt-4">
+   <div class="row text-center justify-content-center">
+     <!-- Browse by Genre -->
+     <div class="col-md-12 mb-4 d-flex flex-column align-items-center text-center">
+       <h2>Browse by Genre</h2>
+       <table id="genre_table" class="table-home w-100">
+         <tbody id="genre_table_body"></tbody>
+       </table>
+     </div>
+     <!-- Browse by Title -->
+
+     <div class="col-md-12 d-flex flex-column align-items-center text-center">
+       <h2>Browse by Title</h2>
+       <table id="alpha_table" class="table-home w-100">
+         <tbody id="alpha_table_body"></tbody>
+       </table>
+     </div>
+   </div>
+ </div>
 
 <!-- Load jQuery and Bootstrap JS -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

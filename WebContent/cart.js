@@ -21,7 +21,7 @@ function displayCart(cart_content) {
                             <button class="increase-quantity" data-movie-id="${item.movieId}">+</button>
                         </td>
                         <td>
-                            <button class="delete-item" data-movie-id="${item.movieId}">Delete</button>
+                            <button style = "margin:0;" class="delete-item btn button_top" data-movie-id="${item.movieId}">Delete</button>
                         </td>
                         <td>$${(item.price * item.quantity).toFixed(2)}</td>
                     </tr>`;

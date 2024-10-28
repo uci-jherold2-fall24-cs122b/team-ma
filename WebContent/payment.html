@@ -6,17 +6,19 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
-    <title>Checkout</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <title>Checkout</title>
 </head>
 <body>
+
 <a id="home-button" class="btn button_top" href="index.html">
   <i class="fas fa-home"></i> Home
 </a>
 
-<a id="movie-list-url" class="btn button_top" href="#">
-  Movie List
-</a>
-<h2>Pay Here</h2>
+<h2 style="margin-bottom: 25px;">Pay Here:</h2>
+<div id="payment_container">
+
 <form id="payment_form" method="post" action="#">
   <label><b>First Name</b></label>
   <label>
@@ -30,7 +32,7 @@
   <br>
   <label><b>Credit Card Number</b></label>
   <label>
-    <input name="ccnumber" placeholder="Enter Credit Card Number" type="text" required>
+    <input name="ccnumber" placeholder="Enter CCN" type="text" required>
   </label>
   <br>
   <label><b>Expiration Date</b></label>
@@ -38,9 +40,11 @@
     <input name="expiration" type="date" placeholder="Enter Expiration Date" required>
   </label>
   <br>
-  <input type="submit" value="Pay">
-</form>
-<div id="login_error_message"></div>
+  <button type="submit" class="btn button_top">
+    Submit
+  </button></form>
+</div>
+<div id="payment_error_message" style = "color: red; text-align: center;"></div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!-- include our own JS file -->
