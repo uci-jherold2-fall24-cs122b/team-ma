@@ -23,6 +23,7 @@ function displayCart(cart_content) {
                         <td>
                             <button class="delete-item" data-movie-id="${item.movieId}">Delete</button>
                         </td>
+                        <td>$${(item.price * item.quantity).toFixed(2)}</td>
                     </tr>`;
                 cartTableBody.append(rowHTML);
 
