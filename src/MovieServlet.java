@@ -47,7 +47,6 @@ public class MovieServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         System.out.println("Get request");
 
-
         response.setContentType("application/json"); // Response mime type
 
         // Output stream to STDOUT
@@ -70,8 +69,12 @@ public class MovieServlet extends HttpServlet {
             HttpSession session = request.getSession();
             String currentUrl = request.getQueryString();
             System.out.println(currentUrl);
-            session.setAttribute("movieListUrl", currentUrl);
-
+            if(!currentUrl.equals("title=&year=&director=&star=&sort=&N=&page=")){
+                session.setAttribute("movieListUrl", currentUrl);
+            }
+            else{
+                return;
+            }
 
             // Declare our statement
             Statement statement = conn.createStatement();

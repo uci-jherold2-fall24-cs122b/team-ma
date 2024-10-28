@@ -1,3 +1,4 @@
+
 function sendToServlet(title, year, director, star, genre_id, title_letter, sort, N, page){
     // Makes the HTTP GET request and registers on success callback function handleMovieResult
     let data = {};
@@ -101,16 +102,18 @@ function handleMovieResult(resultData) {
         movieTableBodyElement.append(rowHTML);
     }
 
-    $(document).on("click", ".add-to-cart", function () {
+    $(document).off("click", ".add-to-cart").on("click", ".add-to-cart", function () {
+        console.log("adding to cart");
+
         const movieId = $(this).data("id");
         const movieTitle = $(this).data("title");
         const price = $(this).data("price");
-
-        // Call function to add item to cart
-        addToCart(movieId, movieTitle,  1, price); // Quantity 1 as default
+        addToCart(movieId, movieTitle,  1, price);
     });
+
     console.log("max pages: ", resultData[resultData.length-1]["max_pages"]);
     handlePagination(resultData[resultData.length-1]["max_pages"]);
+
 }
 
 function addToCart(movieId, movieTitle, quantity, price) {
@@ -132,6 +135,7 @@ function addToCart(movieId, movieTitle, quantity, price) {
             alert("Failed to add movie to cart. Please try again.");
         }
     });
+
 }
 
 function handleSearchInfo(searchEvent) {
@@ -167,6 +171,7 @@ function handlePagination(max_pages) {
         paginationDiv.innerHTML = '';
         const prevButton = document.createElement('button');
         prevButton.textContent = 'Prev';
+        prevButton.className = 'btn button_top';
         prevButton.onclick = () => {
             editMovieList(current_page - 1);
             window.scrollTo(0, 0);  // Scroll to the top

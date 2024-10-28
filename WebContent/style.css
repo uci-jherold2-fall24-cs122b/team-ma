@@ -3,7 +3,10 @@ body {
     font-family: Inter, sans-serif; /* Change font to Georgia */
     background-color: #94b4cf;
     color: #333;
-    margin: 30px;
+    margin: 35px;
+}
+p {
+    margin: 5px;
 }
 h2 {
     text-align:center;
@@ -13,19 +16,16 @@ h3 {
     text-align: center;
 }
 
-/*#general-button {*/
-/*    !* Variables *!*/
-/*    --button_radius: 0.75em;*/
-/*    --button_color: #e8e8e8;*/
-/*    --button_outline_color: #000000;*/
-/*    font-size: 17px;*/
-/*    font-weight: bold;*/
-/*    border: none;*/
-/*    cursor: pointer;*/
-/*    margin-top: 10px;*/
-/*    border-radius: var(--button_radius);*/
-/*    background: var(--button_outline_color);*/
-/*}*/
+#payment_container {
+    border: 2px solid #ccc;
+    border-radius: 15px;
+    padding: 20px;
+    width: 400px;
+    height: 500px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
 
 button {
     border-radius: 8px;
@@ -129,7 +129,7 @@ input[type="submit"]:hover {
 label {
     /*font-weight: bold;*/
     font-size: 1.1em;
-    margin-right: 7px;
+    margin-right: 15px;
 }
 
 
@@ -226,4 +226,13 @@ a:hover {
     margin: 10px 0;
 }
 
-#search-button
+#payment_form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin: auto;
+    width: 80%;
+}
+
