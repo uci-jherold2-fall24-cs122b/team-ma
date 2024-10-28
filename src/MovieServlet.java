@@ -191,7 +191,7 @@ public class MovieServlet extends HttpServlet {
 
                 jsonObject.add("stars", stars);
 
-                String genresQuery = "SELECT G.name FROM genres AS G "
+                String genresQuery = "SELECT G.id AS genreId, G.name FROM genres AS G "
                         + "JOIN genres_in_movies AS GIM ON G.id = GIM.genreId "
                         + "WHERE GIM.movieId = ? ORDER BY G.name ASC LIMIT 3";
 
@@ -201,8 +201,13 @@ public class MovieServlet extends HttpServlet {
                 JsonArray genres = new JsonArray();
 
                 while (genresRs.next()) {
+                    JsonObject genresObject = new JsonObject();
+                    String genre_id = genresRs.getString("genreId");
                     String genreName = genresRs.getString("name");
-                    genres.add(genreName);
+                    genresObject.addProperty("name", genreName);
+                    genresObject.addProperty("genre_id", genre_id);
+
+                    genres.add(genresObject);
                 }
                 genresRs.close();
                 genresStatement.close();

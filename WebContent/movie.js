@@ -68,7 +68,10 @@ function handleMovieResult(resultData) {
         rowHTML += "<th>";
         let genres = resultData[i]["genres"];
         for (let j = 0; j < genres.length; j++) {
-            rowHTML += genres[j];
+            console.log("genres: ", genres);
+            rowHTML += '<a href=movie.html?genre_id=' + genres[j]['genre_id'] + '>'
+                + genres[j]["name"] +
+                '</a>';
             if (j < genres.length - 1) {
                 rowHTML += ", ";
             }
