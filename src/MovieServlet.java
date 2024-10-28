@@ -93,16 +93,16 @@ public class MovieServlet extends HttpServlet {
             // ILIKE for non case sensitive
 
             if (title != null && !title.isEmpty()) {
-                query += " AND m.title LIKE '%" + title + "%'";
+                query += " AND M.title LIKE '%" + title + "%'";
             }
             if (year != null && !year.isEmpty()) {
-                query += " AND m.year = " + year;
+                query += " AND M.year = " + year;
             }
             if (director != null && !director.isEmpty()) {
-                query += " AND m.director LIKE '%" + director + "%'";
+                query += " AND M.director LIKE '%" + director + "%'";
             }
             if (star != null && !star.isEmpty()) {
-                query += " AND EXISTS (SELECT 1 FROM stars_in_movies sim JOIN stars s ON sim.starId = s.id WHERE sim.movieId = m.id AND s.name LIKE '%" + star + "%')";
+                query += " AND EXISTS (SELECT 1 FROM stars_in_movies SIM JOIN stars S ON SIM.starId = S.id WHERE SIM.movieId = M.id AND S.name LIKE '%" + star + "%')";
             }
             if (genreId != null && !genreId.isEmpty()) {
                 query += " AND GIM.genreId = " + genreId;
@@ -110,24 +110,24 @@ public class MovieServlet extends HttpServlet {
             if (title_letter != null && !title_letter.isEmpty()) {
                 if (title_letter.equals("*")) {
                     //query += " AND LOWER(m.title) REGEXP '^[^A-Za-z0-9]';";
-                    query += " AND LOWER(m.title) REGEXP '^[^a-z0-9]'";
+                    query += " AND LOWER(M.title) REGEXP '^[^a-z0-9]'";
                     //need for non alphanumeical
                 } else {
-                    query += " AND LOWER(m.title) LIKE '" + title_letter.toLowerCase() + "%'";
+                    query += " AND LOWER(M.title) LIKE '" + title_letter.toLowerCase() + "%'";
                 }
             }
             query += " GROUP BY M.id, M.title, M.year, M.director, R.rating, R.numVotes ";
 
             if(sort != null && !sort.isEmpty()){
                 Map<String, String> sortOptions = new HashMap<>();
-                sortOptions.put("0", " ORDER BY r.rating DESC, m.title ASC");
-                sortOptions.put("1", " ORDER BY r.rating DESC, m.title DESC");
-                sortOptions.put("2", " ORDER BY r.rating ASC, m.title ASC");
-                sortOptions.put("3", " ORDER BY r.rating ASC, m.title DESC");
-                sortOptions.put("4", " ORDER BY m.title ASC, r.rating ASC");
-                sortOptions.put("5", " ORDER BY m.title ASC, r.rating DESC");
-                sortOptions.put("6", " ORDER BY m.title DESC, r.rating ASC");
-                sortOptions.put("7", " ORDER BY m.title DESC, r.rating DESC");
+                sortOptions.put("0", " ORDER BY R.rating DESC, M.title ASC");
+                sortOptions.put("1", " ORDER BY R.rating DESC, M.title DESC");
+                sortOptions.put("2", " ORDER BY R.rating ASC, M.title ASC");
+                sortOptions.put("3", " ORDER BY R.rating ASC, M.title DESC");
+                sortOptions.put("4", " ORDER BY M.title ASC, R.rating ASC");
+                sortOptions.put("5", " ORDER BY M.title ASC, R.rating DESC");
+                sortOptions.put("6", " ORDER BY M.title DESC, R.rating ASC");
+                sortOptions.put("7", " ORDER BY M.title DESC, R.rating DESC");
 
                 String orderByClause = sortOptions.get(sort);
                 if (orderByClause != null) {
