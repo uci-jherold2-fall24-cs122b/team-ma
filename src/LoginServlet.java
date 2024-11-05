@@ -4,6 +4,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.jasypt.util.password.StrongPasswordEncryptor;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -56,7 +57,9 @@ public class LoginServlet extends HttpServlet {
             ResultSet rs = loginStatement.getResultSet();
             if(rs.next()) {
                 // username exists, check password
-                if(password.equals(rs.getString("password"))) {
+                String encryptedPassword = rs.getString("password");
+                StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
+                if (passwordEncryptor.checkPassword(password, encryptedPassword)) {
                     // Login success:
                     // set this user into the session
                     request.getSession().setAttribute("user", new User(username));
