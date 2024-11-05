@@ -12,11 +12,9 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
+import java.sql.PreparedStatement;
 import java.util.Date;
 
 /**
@@ -62,11 +60,10 @@ public class IndexServlet extends HttpServlet {
 
         try (Connection conn = dataSource.getConnection()) {
             // Declare our statement
-            Statement statement = conn.createStatement();
 
             String query = "SELECT * FROM genres";
-
-            ResultSet rs = statement.executeQuery(query);
+            PreparedStatement statement = conn.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
 
             JsonArray jsonArray = new JsonArray();
 

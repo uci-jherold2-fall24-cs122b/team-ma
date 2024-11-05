@@ -18,7 +18,6 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -77,7 +76,7 @@ public class MovieServlet extends HttpServlet {
             }
 
             // Declare our statement
-            Statement statement = conn.createStatement();
+            //Statement statement = conn.createStatement();
 
             // old query : "SELECT * FROM movies as M, ratings as R WHERE M.id = R.movieId";
             // added duplicates in search...
@@ -87,7 +86,6 @@ public class MovieServlet extends HttpServlet {
                     + "FROM movies AS M "
                     + "JOIN ratings AS R ON M.id = R.movieId "
                     + "JOIN genres_in_movies AS GIM ON M.id = GIM.movieId ";
-
 
             // take each search query and find ILIKE
             // ILIKE for non case sensitive
@@ -144,7 +142,8 @@ public class MovieServlet extends HttpServlet {
             }
 
                 // Perform the query
-            ResultSet rs = statement.executeQuery(query);
+            PreparedStatement statement = conn.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
 
             JsonArray jsonArray = new JsonArray();
 
