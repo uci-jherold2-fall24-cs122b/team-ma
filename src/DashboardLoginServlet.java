@@ -14,8 +14,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-@WebServlet(name = "LoginServlet", urlPatterns = "/api/login")
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "DashboardLoginServlet", urlPatterns = "/_dashboard/api/login")
+public class DashboardLoginServlet extends HttpServlet {
 
     // Create a dataSource which registered in web.
     private DataSource dataSource;
@@ -31,7 +31,7 @@ public class LoginServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String username = request.getParameter("username");
+        String email = request.getParameter("email");
         String password = request.getParameter("password");
         String recaptchaResponse = request.getParameter("g-recaptcha-response");
         /* This example only allows username/password to be test/test
@@ -48,19 +48,21 @@ public class LoginServlet extends HttpServlet {
             return;
         }
         try (Connection conn = dataSource.getConnection()) {
-            String loginQuery = "SELECT * FROM customers WHERE email = ?;";
+            String loginQuery = "SELECT * FROM employees WHERE email = ?;";
             PreparedStatement loginStatement = conn.prepareStatement(loginQuery);
-            loginStatement.setString(1, username);
+            loginStatement.setString(1, email);
             loginStatement.executeQuery();
+            System.out.println(email);
             ResultSet rs = loginStatement.getResultSet();
             if(rs.next()) {
                 // username exists, check password
                 String encryptedPassword = rs.getString("password");
                 StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
+                System.out.println(encryptedPassword);
                 if (passwordEncryptor.checkPassword(password, encryptedPassword)) {
                     // Login success:
-                    // set this user into the session
-                    request.getSession().setAttribute("user", new User(username));
+                    // set this employee into the session
+                    request.getSession().setAttribute("employee", new Employee(email));
                     responseJsonObject.addProperty("status", "success");
                     responseJsonObject.addProperty("message", "success");
                 }
