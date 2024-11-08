@@ -66,9 +66,14 @@ public class DashboardMovieServlet extends HttpServlet {
             System.out.println("executing");
             ResultSet rs = movieStatement.executeQuery();
             System.out.println("complete");
-            while(rs.next()){
+            if(rs.next()){
+                responseJsonObject.addProperty("status", "success");
                 String message = rs.getString("message");
                 responseJsonObject.addProperty("message", message);
+            }
+            else{
+                responseJsonObject.addProperty("status", "fail");
+                responseJsonObject.addProperty("message", "Movie could not be added. Try again.");
             }
 
             response.getWriter().write(responseJsonObject.toString());
