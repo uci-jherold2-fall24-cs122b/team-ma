@@ -20,8 +20,8 @@ import java.sql.ResultSet;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet(name = "DashboardStarServlet", urlPatterns = "/_dashboard/api/star")
-public class DashboardStarServlet extends HttpServlet {
+@WebServlet(name = "DashboardMovieServlet", urlPatterns = "/_dashboard/api/movie")
+public class DashboardMovieServlet extends HttpServlet {
 
     // Create a dataSource which registered in web.
     private DataSource dataSource;
@@ -38,29 +38,37 @@ public class DashboardStarServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String starName = request.getParameter("starname");
-        String birthYear = request.getParameter("birthyear");
+        String title = request.getParameter("title");
+        String year = request.getParameter("year");
+        String director = request.getParameter("director");
+        String star = request.getParameter("star");
+        String birthYear = request.getParameter("birth_year");
+        String genre = request.getParameter("genre");
 
         JsonObject responseJsonObject = new JsonObject();
         try (Connection conn = dataSource.getConnection()) {
-
-            CallableStatement starStatement = conn.prepareCall("{ CALL add_star(?, ?, ?) }");
-            starStatement.setString(1, starName);
+            System.out.println(title);
+            System.out.println(year);
+            System.out.println(director);
+            CallableStatement movieStatement = conn.prepareCall("{ CALL add_movie(?, ?, ?, ?, ?, ?) }");
+            movieStatement.setString(1, title);
+            movieStatement.setString(2, year);
+            movieStatement.setString(3, director);
+            movieStatement.setString(4, star);
             if (birthYear == null || birthYear.isEmpty()) {
-                starStatement.setNull(2, java.sql.Types.INTEGER);
+                movieStatement.setNull(5, java.sql.Types.INTEGER);
             } else {
-                starStatement.setString(2, birthYear);
+                movieStatement.setString(5, birthYear);
             }
-            starStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
-            int update = starStatement.executeUpdate();
-            if(update > 0){
-                responseJsonObject.addProperty("status", "success");
-                responseJsonObject.addProperty("message", "success");
-            }
-            else{
-                responseJsonObject.addProperty("status", "fail");
-                request.getServletContext().log("Add star failed");
-                responseJsonObject.addProperty("message", "Star could not be added. Try again.");
+
+            movieStatement.setString(6, genre);
+
+            System.out.println("executing");
+            ResultSet rs = movieStatement.executeQuery();
+            System.out.println("complete");
+            while(rs.next()){
+                String message = rs.getString("message");
+                responseJsonObject.addProperty("message", message);
             }
 
             response.getWriter().write(responseJsonObject.toString());

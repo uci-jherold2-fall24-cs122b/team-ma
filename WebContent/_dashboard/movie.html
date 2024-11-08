@@ -1,10 +1,68 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <title>Dashboard</title>
 </head>
 <body>
+
+<h1>Add Movie</h1>
+
+<div id="movie_container">
+
+    <form id="movie_form" method="post" action="#">
+        <label><b>Title</b></label>
+        <label>
+            <input name="title" placeholder="Title" type="text" required>
+        </label>
+        <br>
+        <label><b>Year</b></label>
+        <label>
+            <input name="year" placeholder="Year" type="number" required>
+        </label>
+        <label><b>Director</b></label>
+        <label>
+            <input name="director" placeholder="Director" type="text" required>
+        </label>
+
+        <label><b>Star Name</b></label>
+        <label>
+            <input name="star" placeholder="Star Name" type="text" required>
+        </label>
+
+        <label><b>Star Birth Year</b></label>
+        <label>
+            <input name="birth_year" placeholder="Birth Year" type="number">
+        </label>
+
+        <label><b>Genre</b></label>
+        <label>
+            <input name="genre" placeholder="Genre" type="text" required>
+        </label>
+
+
+        <div id="movie_error_message" style = "height: 50px; color: red; text-align: center;"></div>
+        <button type="submit" class="btn button_top">
+            Add
+        </button>
+    </form>
+</div>
+
+
+<!-- Load jQuery and Bootstrap JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="movie.js"></script>
 
 </body>
 </html>
