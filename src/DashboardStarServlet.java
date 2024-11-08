@@ -45,25 +45,22 @@ public class DashboardStarServlet extends HttpServlet {
         try (Connection conn = dataSource.getConnection()) {
 
             CallableStatement starStatement = conn.prepareCall("{ CALL add_star(?, ?) }");
-
             starStatement.setString(1, starName);
-            starStatement.setString(2, birthYear);
-
-            starStatement.execute();
-
+            if (birthYear == null || birthYear.isEmpty()) {
+                starStatement.setNull(2, java.sql.Types.INTEGER);
+            } else {
+                starStatement.setString(2, birthYear);
+            }
             int update = starStatement.executeUpdate();
-            if (update > 0) {
-                // ccnumber exists, check name
+            if(update > 0){
                 responseJsonObject.addProperty("status", "success");
                 responseJsonObject.addProperty("message", "success");
             }
             else{
-                responseJsonObject.addProperty("status", "error");
-                responseJsonObject.addProperty("message", "Add star failed. Try again.");
-
+                responseJsonObject.addProperty("status", "fail");
+                request.getServletContext().log("Add star failed");
+                responseJsonObject.addProperty("message", "Star could not be added. Try again.");
             }
-
-
 
             response.getWriter().write(responseJsonObject.toString());
         } catch (Exception e) {
