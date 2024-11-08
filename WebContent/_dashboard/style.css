@@ -1,0 +1,238 @@
+body {
+    position: relative;
+    font-family: Inter, sans-serif; /* Change font to Georgia */
+    background-color: #94b4cf;
+    color: #333;
+    margin: 35px;
+}
+p {
+    margin: 5px;
+}
+h2 {
+    text-align:center;
+    font-weight:bold;
+}
+h3 {
+    text-align: center;
+}
+
+#payment_container {
+    border: 2px solid #ccc;
+    border-radius: 15px;
+    padding: 20px;
+    width: 400px;
+    height: 500px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+button {
+    border-radius: 8px;
+    border: none;
+    background-color: #7698b5;
+    color: white;
+}
+button:hover {
+    transform: scale(1.05); /* Increases button size by 10% */
+}
+.button_top {
+    margin:10px;
+    border-radius: 8px;
+    background-color: #7698b5;
+    color: white;
+}
+
+.button_top:hover {
+    transform: scale(1.05); /* Increases button size by 10% */
+}
+
+.table {
+    margin-top: 25px;
+    border-collapse: separate;
+    border: solid black 1px;
+    border-radius: 15px;
+    overflow: hidden;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+.table thead tr {
+    background-color: rgba(255, 255, 255, 0.5);
+    color: black;
+    border: 1px solid black;
+    font-weight: bold;
+    font-size: 1.25em;
+
+}
+
+.table th {
+    color: black;
+    border: 1px solid black;
+}
+
+.table td {
+    border: 1px solid black;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.table-home {
+    font-weight: bold;
+    text-align: center;
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 1.5em;
+}
+
+.table-home th {
+    color: black;
+    border: 1px solid black;
+}
+
+
+input[type="text"] {
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    height: 25px;
+    padding: 10px;
+    width: 180px;
+    box-sizing: border-box;
+}
+
+
+input[type="number"] {
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    height: 25px;
+    padding: 10px;
+    width: 85px;
+    box-sizing: border-box;
+}
+
+
+input[type="submit"] {
+    border-radius: 5px;
+    background-color: #658aa8;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #658aa8;
+}
+
+label {
+    /*font-weight: bold;*/
+    font-size: 1.1em;
+    margin-right: 15px;
+}
+
+
+/* Shopping cart button styling */
+.cart-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 10px 15px;
+    background-color: #7698b5;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+/*#cart-table {*/
+/*    width: 100%;*/
+/*    border-spacing: 10px; !* Adds space between cells *!*/
+/*}*/
+
+/*#cart-table thead th {*/
+/*    padding: 15px;*/
+/*    background-color: #f2f2f2;*/
+/*    border: 1px solid #ddd;*/
+/*    text-align: left;*/
+/*}*/
+
+/*#cart-items td {*/
+/*    padding: 10px;*/
+/*    border: 1px solid #ddd;*/
+/*    background-color: #f9f9f9;*/
+/*}*/
+
+.container {
+    align-items: center;
+}
+
+.container h2 {
+    font-weight:bold;
+    text-align:center;
+    max-width: 90%;
+}
+
+
+select {
+    margin-right: 7px;
+    height: 25px;
+    font-size: 1rem;
+    color: #333;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+select:hover {
+    border-color: #888; /* Border color on hover */
+}
+
+select option {
+    padding: 8px;
+    color: #333;
+}
+
+
+.table-home a {
+    color: #345a88;
+}
+.table-home a:hover {
+    color: #1c4170;
+    text-decoration: none;
+}
+
+a {
+    color: #345a88;
+}
+a:hover {
+    color:white;
+}
+
+.table a:hover {
+    color: #1c4170;
+    text-decoration: none;
+}
+
+.custom-line {
+    width: 100%;
+    height: 1px;
+    background-color: rgba(51, 51, 51, 0.83);
+    margin: 10px 0;
+}
+
+#payment_form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin: auto;
+    width: 80%;
+}
+

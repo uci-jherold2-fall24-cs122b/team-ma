@@ -17,28 +17,103 @@
 
 <h1>Metadata</h1>
 
-<table>
-    <thead>
-    <tr><th>Attribute</th><th>Type</th>
-    </tr>
-    </thead>
+<a href="star.html" class="btn button_top cart-button">
+    <i class="fas fa-star"></i> Add Star
+</a>
+
+<h2>movies</h2>
+<table class="table mx-auto">
+    <thead><tr><th>Attribute</th><th>Type</th></tr></thead>
     <tbody>
-    <tr>
-        <td>id</td>
-        <td>INT</td>
-    </tr>
-    <tr>
-        <td>name</td>
-        <td>VARCHAR(255)</td>
-    </tr>
-    <tr>
-        <td>email</td>
-        <td>VARCHAR(255)</td>
-    </tr>
-    <tr>
-        <td>created_at</td>
-        <td>TIMESTAMP</td>
-    </tr>
+    <tr><td>id</td><td>VARCHAR</td></tr>
+    <tr><td>title</td><td>VARCHAR</td></tr>
+    <tr><td>year</td><td>INT</td></tr>
+    <tr><td>director</td><td>VARCHAR</td></tr>
+    </tbody>
+</table>
+
+<h2>stars</h2>
+<table class="table mx-auto">
+    <thead><tr><th>Attribute</th><th>Type</th></tr></thead>
+    <tbody>
+    <tr><td>id</td><td>VARCHAR</td></tr>
+    <tr><td>name</td><td>VARCHAR</td></tr>
+    <tr><td>birthYear</td><td>INT</td></tr>
+    </tbody>
+</table>
+
+
+<h2>stars_in_movies</h2>
+<table class="table mx-auto">
+    <thead><tr><th>Attribute</th><th>Type</th></tr></thead>
+    <tbody>
+    <tr><td>starId</td><td>VARCHAR</td></tr>
+    <tr><td>movieId</td><td>VARCHAR</td></tr>
+    </tbody>
+</table>
+
+<h2>genres</h2>
+<table class="table mx-auto">
+    <thead><tr><th>Attribute</th><th>Type</th></tr></thead>
+    <tbody>
+    <tr><td>id</td><td>INT</td></tr>
+    <tr><td>name</td><td>VARCHAR</td></tr>
+    </tbody>
+</table>
+
+<h2>genres_in_movies</h2>
+<table class="table mx-auto">
+
+    <thead><tr><th>Attribute</th><th>Type</th></tr></thead>
+    <tbody>
+    <tr><td>genreId</td><td>INT</td></tr>
+    <tr><td>movieId</td><td>VARCHAR</td></tr>
+    </tbody>
+</table>
+
+<h2>creditcards</h2>
+<table class="table mx-auto">
+    <thead><tr><th>Attribute</th><th>Type</th></tr></thead>
+    <tbody>
+    <tr><td>id</td><td>VARCHAR</td></tr>
+    <tr><td>firstName</td><td>VARCHAR</td></tr>
+    <tr><td>lastName</td><td>VARCHAR</td></tr>
+    <tr><td>ccId</td><td>VARCHAR</td></tr>
+    <tr><td>address</td><td>VARCHAR</td></tr>
+    <tr><td>email</td><td>VARCHAR</td></tr>
+    <tr><td>password</td><td>VARCHAR</td></tr>
+    </tbody>
+</table>
+
+<h2>sales</h2>
+<table class="table mx-auto">
+    <thead><tr><th>Attribute</th><th>Type</th></tr></thead>
+    <tbody>
+    <tr><td>id</td><td>INT</td></tr>
+    <tr><td>customerId</td><td>INT</td></tr>
+    <tr><td>movieId</td><td>VARCHAR</td></tr>
+    <tr><td>saleDate</td><td>DATE</td></tr>
+    </tbody>
+</table>
+
+
+<h2>ratings</h2>
+<table class="table mx-auto">
+    <thead><tr><th>Attribute</th><th>Type</th></tr></thead>
+    <tbody>
+    <tr><td>movieId</td><td>VARCHAR</td></tr>
+    <tr><td>rating</td><td>FLOAT</td></tr>
+    <tr><td>numVotes</td><td>INT</td></tr>
+    </tbody>
+</table>
+
+<h2>employees</h2>
+<table class="table mx-auto">
+    <thead><tr><th>Attribute</th><th>Type</th></tr></thead>
+    <tbody>
+    <tr><td>email</td><td>VARCHAR</td></tr>
+    <tr><td>password</td><td>VARCHAR</td></tr>
+    <tr><td>fullname</td><td>VARCHAR</td></tr>
     </tbody>
 </table>
 
