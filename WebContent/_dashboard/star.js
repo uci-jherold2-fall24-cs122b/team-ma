@@ -13,7 +13,7 @@ function handleStarResult(resultDataString) {
     console.log(resultDataJson["status"]);
 
     if (resultDataJson["status"] === "success") {
-        window.location.replace("confirmation.html");
+        $("#star_success_message").text(resultDataJson["message"]);
     } else {
         // If payment fails, the web page will display
         // error messages on <div> with id "login_error_message"

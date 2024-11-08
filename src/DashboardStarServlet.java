@@ -53,13 +53,14 @@ public class DashboardStarServlet extends HttpServlet {
             }
             starStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
             int update = starStatement.executeUpdate();
+
             if(update > 0){
+                String newStarId = starStatement.getString(3);
                 responseJsonObject.addProperty("status", "success");
-                responseJsonObject.addProperty("message", "success");
+                responseJsonObject.addProperty("message", "Success! Star added with ID: " + newStarId);
             }
             else{
                 responseJsonObject.addProperty("status", "fail");
-                request.getServletContext().log("Add star failed");
                 responseJsonObject.addProperty("message", "Star could not be added. Try again.");
             }
 
