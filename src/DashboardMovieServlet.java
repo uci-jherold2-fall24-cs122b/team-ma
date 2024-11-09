@@ -67,8 +67,14 @@ public class DashboardMovieServlet extends HttpServlet {
             ResultSet rs = movieStatement.executeQuery();
             System.out.println("complete");
             if(rs.next()){
-                responseJsonObject.addProperty("status", "success");
                 String message = rs.getString("message");
+
+                if(message.equals("Movie already exists.")){
+                    responseJsonObject.addProperty("status", "fail");
+                }
+                else{
+                    responseJsonObject.addProperty("status", "success");
+                }
                 responseJsonObject.addProperty("message", message);
             }
             else{

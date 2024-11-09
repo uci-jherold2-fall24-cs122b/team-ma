@@ -83,7 +83,7 @@ BEGIN
     IF EXISTS (SELECT 1
                FROM movies
                WHERE title = movieTitle AND year = movieYear AND director = movieDirector) THEN
-        SELECT 'Movie already exists' AS message;
+        SELECT 'Movie already exists.' AS message;
     ELSE
 		SELECT CONCAT('tt0', next_id) INTO movie_id
 		FROM next_ids

@@ -13,13 +13,13 @@ function handleMovieResult(resultDataString) {
     console.log(resultDataJson["status"]);
 
     if (resultDataJson["status"] === "success") {
-        $("#movie_success_message").text(resultDataJson["message"]);
+        $("#movie_message").text(resultDataJson["message"]).css("color", "green");
     } else {
         // If payment fails, the web page will display
         // error messages on <div> with id "login_error_message"
         console.log("show error message");
         console.log(resultDataJson["message"]);
-        $("#movie_error_message").text(resultDataJson["message"]);
+        $("#movie_message").text(resultDataJson["message"]).css("color", "red");
     }
 }
 

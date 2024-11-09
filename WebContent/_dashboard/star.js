@@ -13,13 +13,13 @@ function handleStarResult(resultDataString) {
     console.log(resultDataJson["status"]);
 
     if (resultDataJson["status"] === "success") {
-        $("#star_success_message").text(resultDataJson["message"]);
+        $("#star_message").text(resultDataJson["message"]).css("color", "green");
     } else {
         // If payment fails, the web page will display
         // error messages on <div> with id "login_error_message"
         console.log("show error message");
         console.log(resultDataJson["message"]);
-        $("#star_error_message").text(resultDataJson["message"]);
+        $("#star_message").text(resultDataJson["message"]).css("color", "red");
     }
 }
 

@@ -14,25 +14,41 @@
     <title>Dashboard</title>
 </head>
 <body>
+<h1>Add a Star</h1>
 
-<h1>Add Star</h1>
+<a href="metadata.html" class="btn button_top">
+    <i class="fas fa-home"></i> Home
+</a>
 
-<div id="star_container">
+<a href="star.html" class="btn button_top">
+    <i class="fas fa-star"></i> Add Star
+</a>
+
+<a href="movie.html" class="btn button_top">
+    <i class="fas fa-film"></i> Add Movie
+</a>
+
+<a id="home-button" class="btn button_top" href="../index.html">
+    <i class="fas fa-cursor"></i> Browse Movies
+</a>
+
+<div class="form_container" id = "star_container">
+
+    <h2>Add a Star</h2>
+    <div id="star_message" style = "height: 40px; text-align: center;"></div>
 
     <form id="star_form" method="post" action="#">
-        <label><b>Star Name</b></label>
+
         <label>
-            <input name="starname" placeholder="Enter Star Name" type="text" required>
+            <input name="starname" placeholder="Name" type="text" required>
         </label>
         <br>
-        <label><b>Birth Year</b></label>
+
         <label>
-            <input name="birthyear" placeholder="Enter Birth Year" type="number">
+            <input name="birthyear" placeholder="Birth Year" type="number">
         </label>
-        <div id="star_success_message" style = "height: 50px; color: #00ff04; text-align: center;"></div>
-        <div id="star_error_message" style = "height: 50px; color: red; text-align: center;"></div>
-        <button type="submit" class="btn button_top">
-            Add
+        <button type="submit" class="btn button_top" style = "width: 80%;">
+            <i class='fas fa-plus'></i> Add
         </button>
     </form>
 </div>

@@ -14,46 +14,61 @@
     <title>Dashboard</title>
 </head>
 <body>
+<h1>Add a Movie</h1>
 
-<h1>Add Movie</h1>
+<a href="metadata.html" class="btn button_top">
+    <i class="fas fa-home"></i> Home
+</a>
 
-<div id="movie_container">
+<a href="star.html" class="btn button_top">
+    <i class="fas fa-star"></i> Add Star
+</a>
+
+<a href="movie.html" class="btn button_top">
+    <i class="fas fa-film"></i> Add Movie
+</a>
+
+<a id="home-button" class="btn button_top" href="../index.html">
+    <i class="fas fa-cursor"></i> Browse Movies
+</a>
+
+<div class="form_container" id = "movie_container">
+    <h2>Add a Movie</h2>
+    <div id="movie_message" style = "height: 40px; text-align: center;"></div>
 
     <form id="movie_form" method="post" action="#">
-        <label><b>Title</b></label>
+
+
         <label>
             <input name="title" placeholder="Title" type="text" required>
         </label>
         <br>
-        <label><b>Year</b></label>
+
         <label>
             <input name="year" placeholder="Year" type="number" required>
         </label>
-        <label><b>Director</b></label>
+        <br>
         <label>
             <input name="director" placeholder="Director" type="text" required>
         </label>
+        <br>
 
-        <label><b>Star Name</b></label>
         <label>
-            <input name="star" placeholder="Star Name" type="text" required>
+            <input name="star" placeholder="Star's Name" type="text" required>
         </label>
+        <br>
 
-        <label><b>Star Birth Year</b></label>
         <label>
-            <input name="birth_year" placeholder="Birth Year" type="number">
+            <input name="birth_year" placeholder="Star's Birth Year" type="number">
         </label>
+        <br>
 
-        <label><b>Genre</b></label>
         <label>
             <input name="genre" placeholder="Genre" type="text" required>
         </label>
 
-        <div id="movie_success_message" style = "height: 50px; color: #00ff04; text-align: center;"></div>
-        <div id="movie_error_message" style = "height: 50px; color: red; text-align: center;"></div>
-
-        <button type="submit" class="btn button_top">
-            Add
+        <button type="submit" class="btn button_top" style = "width: 80%;">
+            <i class='fas fa-plus'></i> Add
         </button>
     </form>
 </div>
