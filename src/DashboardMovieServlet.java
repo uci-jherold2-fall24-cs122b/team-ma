@@ -13,10 +13,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import javax.xml.transform.Result;
 import java.io.IOException;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.List;
 import java.util.Map;
 
@@ -47,21 +44,20 @@ public class DashboardMovieServlet extends HttpServlet {
 
         JsonObject responseJsonObject = new JsonObject();
         try (Connection conn = dataSource.getConnection()) {
-            System.out.println(title);
-            System.out.println(year);
-            System.out.println(director);
-            CallableStatement movieStatement = conn.prepareCall("{ CALL add_movie(?, ?, ?, ?, ?, ?) }");
-            movieStatement.setString(1, title);
-            movieStatement.setString(2, year);
-            movieStatement.setString(3, director);
-            movieStatement.setString(4, star);
+
+            CallableStatement movieStatement = conn.prepareCall("{ CALL add_movie(?,?, ?, ?, ?, ?, ?) }");
+            movieStatement.setNull(1, Types.VARCHAR);
+            movieStatement.setString(2, title);
+            movieStatement.setString(3, year);
+            movieStatement.setString(4, director);
+            movieStatement.setString(5, star);
             if (birthYear == null || birthYear.isEmpty()) {
-                movieStatement.setNull(5, java.sql.Types.INTEGER);
+                movieStatement.setNull(6, java.sql.Types.INTEGER);
             } else {
-                movieStatement.setString(5, birthYear);
+                movieStatement.setString(6, birthYear);
             }
 
-            movieStatement.setString(6, genre);
+            movieStatement.setString(7, genre);
 
             System.out.println("executing");
             ResultSet rs = movieStatement.executeQuery();

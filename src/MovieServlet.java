@@ -44,7 +44,6 @@ public class MovieServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println("Get request");
 
         response.setContentType("application/json"); // Response mime type
 
@@ -78,13 +77,12 @@ public class MovieServlet extends HttpServlet {
             // Declare our statement
             //Statement statement = conn.createStatement();
 
-            // old query : "SELECT * FROM movies as M, ratings as R WHERE M.id = R.movieId";
             // added duplicates in search...
             String query = "SELECT M.id, M.title, M.year, M.director, R.rating, R.numVotes, "
                     + "COUNT(*) OVER () AS total_count, "  // This provides the total count across all rows
                     + "GROUP_CONCAT(GIM.genreId) AS genre_ids "
                     + "FROM movies AS M "
-                    + "JOIN ratings AS R ON M.id = R.movieId "
+                    + "LEFT JOIN ratings AS R ON M.id = R.movieId "
                     + "JOIN genres_in_movies AS GIM ON M.id = GIM.movieId ";
 
             // take each search query and find ILIKE
@@ -149,6 +147,7 @@ public class MovieServlet extends HttpServlet {
 
             // Iterate through each row of rs
             int total_count = 0;
+            System.out.println(query);
             while (rs.next()) {
                 total_count = rs.getInt("total_count");
                 String movie_id = rs.getString("id");

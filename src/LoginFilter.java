@@ -33,6 +33,10 @@ public class LoginFilter implements Filter {
         if (httpRequest.getSession().getAttribute("user") == null && httpRequest.getSession().getAttribute("employee") == null) {
             httpResponse.sendRedirect("login.html");
         } else {
+            if(httpRequest.getSession().getAttribute("employee") == null && httpRequest.getRequestURI().contains("/_dashboard")) {
+                System.out.println("HIII");
+                httpResponse.sendRedirect("login.html");
+            }
             chain.doFilter(request, response);
         }
     }
