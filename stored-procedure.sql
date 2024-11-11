@@ -1,9 +1,9 @@
 use moviedb;
 
 CREATE TABLE IF NOT EXISTS next_ids (
-                                        table_name VARCHAR(100) PRIMARY KEY,
+	table_name VARCHAR(100) PRIMARY KEY,
     next_id INT NOT NULL
-    );
+);
 
 INSERT INTO next_ids
 SELECT 'movies', IFNULL(MAX(CAST(SUBSTRING(id, 3) AS UNSIGNED)), 0) + 1
@@ -18,10 +18,10 @@ WHERE id REGEXP '^nm[0-9]+$';
 INSERT INTO next_ids
 SELECT 'genres', MAX(id) + 1
 FROM genres
-    ON DUPLICATE KEY UPDATE next_id = VALUES(next_id);
 
 
 DELIMITER //
+DROP PROCEDURE IF EXISTS add_star;
 CREATE PROCEDURE add_star (
     IN name VARCHAR(100),
     IN birthYear INTEGER,
@@ -44,6 +44,8 @@ DELIMITER ;
 
 
 DELIMITER //
+DROP PROCEDURE IF EXISTS add_genre;
+
 CREATE PROCEDURE add_genre (
     IN name VARCHAR(32),
     OUT new_id INT
@@ -65,6 +67,7 @@ DELIMITER ;
 
 DELIMITER //
 
+DROP PROCEDURE IF EXISTS add_movie;
 
 CREATE PROCEDURE add_movie (
     IN fid VARCHAR(10),
@@ -105,11 +108,13 @@ END IF;
 
         -- Check if the star exists, otherwise add the star
 		IF starName IS NOT NULL THEN
-			IF EXISTS (SELECT 1 FROM stars WHERE name = starName AND birthYear = starBirthYear) THEN
-SELECT id INTO star_id
-FROM stars
-WHERE name = starName AND birthYear = starBirthYear;
-ELSE
+			IF EXISTS (SELECT 1 FROM stars WHERE name = starName AND (birthYear = starBirthYear OR
+            (birthYear IS NULL AND starBirthYear IS NULL))) THEN
+			SELECT id INTO star_id
+			FROM stars
+			WHERE name = starName AND (birthYear = starBirthYear OR (birthYear IS NULL AND starBirthYear IS NULL));
+
+		ELSE
 				CALL add_star(starName, starBirthYear, star_id);
 				SET star_added = TRUE;
 END IF;
@@ -157,12 +162,13 @@ DELIMITER ;
 
 
 DELIMITER //
+DROP PROCEDURE IF EXISTS add_star_in_movie;
+
 CREATE PROCEDURE add_star_in_movie (
     IN stagename VARCHAR(100),
     IN movie_id VARCHAR(10)
 )
 BEGIN
-
     DECLARE star_id VARCHAR(10);
 
 SELECT id INTO star_id
