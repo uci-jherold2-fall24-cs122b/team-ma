@@ -87,7 +87,7 @@ public class SAXParserExampleStars extends DefaultHandler {
 
     private void insertStarIntoDatabase(Star star) {
 
-        System.out.println(star);
+
         try (CallableStatement starStatement = connection.prepareCall("{ CALL add_star(?, ?, ?) }")) {
             starStatement.setString(1, tempStar.getName());
             if (tempStar.getDob() == -1) {
@@ -99,17 +99,10 @@ public class SAXParserExampleStars extends DefaultHandler {
 
             int update = starStatement.executeUpdate();
 
-            if(update > 0) {
-                System.out.println("star added!");
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public static void main(String[] args) {
-        SAXParserExampleStars spe = new SAXParserExampleStars();
-        spe.runExample();
-    }
 
 }

@@ -10,13 +10,17 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-
 public class SAXParserExample extends DefaultHandler {
 
     private String tempVal;
     private Movie tempMovie;
     private Connection connection;
     private DataSource dataSource;
+    public Integer duplicates = 0;
+
+    // List to hold movies for batch processing
+    private final int BATCH_SIZE = 1000;
+    private int movieCount = 0;
 
     public SAXParserExample() {
         initializeDatabase();
@@ -28,13 +32,11 @@ public class SAXParserExample extends DefaultHandler {
     }
 
     private void initializeDatabase() {
-
         try {
             String url = "jdbc:mysql://localhost:3306/moviedb";
             String user = "mytestuser";
             String password = "My6$Password";
             connection = DriverManager.getConnection(url, user, password);
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -75,6 +77,11 @@ public class SAXParserExample extends DefaultHandler {
     public void endElement(String uri, String localName, String qName) throws SAXException {
         if (qName.equalsIgnoreCase("film")) {
             insertMovieIntoDatabase(tempMovie);
+            if (movieCount >= BATCH_SIZE) {
+                // Commit batch
+                commitBatch();
+                movieCount = 0;  // Reset count
+            }
         } else if (qName.equalsIgnoreCase("fid")) {
             tempMovie.setId(tempVal);
         } else if (qName.equalsIgnoreCase("t")) {
@@ -93,8 +100,10 @@ public class SAXParserExample extends DefaultHandler {
     }
 
     private void insertMovieIntoDatabase(Movie movie) {
+        if (movie.getId() == null || movie.getTitle() == null || movie.getDirector() == null) {
+            return;
+        }
 
-        System.out.println(movie);
         try (CallableStatement movieStatement = connection.prepareCall("{ CALL add_movie(?, ?, ?, ?, ?, ?, ?) }")) {
             movieStatement.setString(1, movie.getId());
             movieStatement.setString(2, movie.getTitle());
@@ -102,28 +111,31 @@ public class SAXParserExample extends DefaultHandler {
             movieStatement.setString(4, movie.getDirector());
             // star info is null
             movieStatement.setNull(5, Types.VARCHAR);
-            movieStatement.setNull(6, java.sql.Types.INTEGER);
-
+            movieStatement.setNull(6, Types.INTEGER);
             movieStatement.setString(7, movie.getGenre());
 
-            ResultSet rs = movieStatement.executeQuery();
-
-            if (rs.next()) {
-                String message = rs.getString("message");
-
-                System.out.println(message);
+            // Execute statement to check for duplicates
+            try (ResultSet rs = movieStatement.executeQuery()) {
+                if (rs.next()) {
+                    String message = rs.getString("message");
+                    if (message != null && message.equals("Movie already exists.")) {
+                        duplicates += 1;  // Track duplicate entries
+                    }
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-
+        movieCount++;
     }
 
-    public static void main(String[] args) {
-        SAXParserExample spe = new SAXParserExample();
-        spe.runExample();
+    private void commitBatch() {
+        try {
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+
 }
-
-

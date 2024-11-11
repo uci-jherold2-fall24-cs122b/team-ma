@@ -52,6 +52,7 @@ public class DashboardStarServlet extends HttpServlet {
                 starStatement.setString(2, birthYear);
             }
             starStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            System.out.println("HI");
             int update = starStatement.executeUpdate();
 
             if(update > 0){
