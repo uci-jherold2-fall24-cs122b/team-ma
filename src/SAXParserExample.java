@@ -1,5 +1,7 @@
 import java.io.IOException;
 import java.sql.*;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.sql.DataSource;
 import javax.xml.parsers.ParserConfigurationException;
@@ -15,12 +17,9 @@ public class SAXParserExample extends DefaultHandler {
     private String tempVal;
     private Movie tempMovie;
     private Connection connection;
-    private DataSource dataSource;
     public Integer duplicates = 0;
 
-    // List to hold movies for batch processing
-    private final int BATCH_SIZE = 1000;
-    private int movieCount = 0;
+    private Set<String> movieIds = new HashSet<>();
 
     public SAXParserExample() {
         initializeDatabase();
@@ -37,6 +36,8 @@ public class SAXParserExample extends DefaultHandler {
             String user = "mytestuser";
             String password = "My6$Password";
             connection = DriverManager.getConnection(url, user, password);
+            connection.setAutoCommit(false);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -55,6 +56,7 @@ public class SAXParserExample extends DefaultHandler {
     private void closeDatabase() {
         try {
             if (connection != null && !connection.isClosed()) {
+                connection.commit();
                 connection.close();
             }
         } catch (SQLException e) {
@@ -77,12 +79,14 @@ public class SAXParserExample extends DefaultHandler {
     public void endElement(String uri, String localName, String qName) throws SAXException {
         if (qName.equalsIgnoreCase("film")) {
             insertMovieIntoDatabase(tempMovie);
-            if (movieCount >= BATCH_SIZE) {
-                // Commit batch
-                commitBatch();
-                movieCount = 0;  // Reset count
-            }
+
         } else if (qName.equalsIgnoreCase("fid")) {
+            if (movieIds.contains(tempVal)) {
+                duplicates++;
+            } else {
+                movieIds.add(tempMovie.getId());
+                insertMovieIntoDatabase(tempMovie);
+            }
             tempMovie.setId(tempVal);
         } else if (qName.equalsIgnoreCase("t")) {
             tempMovie.setTitle(tempVal);
@@ -127,15 +131,6 @@ public class SAXParserExample extends DefaultHandler {
             e.printStackTrace();
         }
 
-        movieCount++;
-    }
-
-    private void commitBatch() {
-        try {
-            connection.commit();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
 }

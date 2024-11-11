@@ -33,6 +33,7 @@ public class SAXParserExampleStars extends DefaultHandler {
             String user = "mytestuser";
             String password = "My6$Password";
             connection = DriverManager.getConnection(url, user, password);
+            connection.setAutoCommit(false);
 
         } catch ( SQLException e) {
             e.printStackTrace();
@@ -52,6 +53,7 @@ public class SAXParserExampleStars extends DefaultHandler {
     private void closeDatabase() {
         try {
             if (connection != null && !connection.isClosed()) {
+                connection.commit();
                 connection.close();
             }
         } catch (SQLException e) {
@@ -86,7 +88,6 @@ public class SAXParserExampleStars extends DefaultHandler {
     }
 
     private void insertStarIntoDatabase(Star star) {
-
 
         try (CallableStatement starStatement = connection.prepareCall("{ CALL add_star(?, ?, ?) }")) {
             starStatement.setString(1, tempStar.getName());

@@ -15,8 +15,6 @@ public class SAXParserExampleSIM extends DefaultHandler {
     private Connection connection;
 
     // List to hold StarInMovie entries for batch insert
-    private final int BATCH_SIZE = 1000;  // Adjust batch size as needed
-    private int movieCount = 0;
 
     public SAXParserExampleSIM() {
         initializeDatabase();
@@ -33,7 +31,7 @@ public class SAXParserExampleSIM extends DefaultHandler {
             String user = "mytestuser";
             String password = "My6$Password";
             connection = DriverManager.getConnection(url, user, password);
-            connection.setAutoCommit(false);  // Disable auto-commit for batch processing
+            connection.setAutoCommit(false);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -52,6 +50,7 @@ public class SAXParserExampleSIM extends DefaultHandler {
     private void closeDatabase() {
         try {
             if (connection != null && !connection.isClosed()) {
+                connection.commit();
                 connection.close();
             }
         } catch (SQLException e) {
@@ -74,11 +73,7 @@ public class SAXParserExampleSIM extends DefaultHandler {
     public void endElement(String uri, String localName, String qName) throws SAXException {
         if (qName.equalsIgnoreCase("m")) {
             insertStarIntoDatabase(tempSim);
-            if (movieCount >= BATCH_SIZE) {
-                // Commit batch
-                commitBatch();
-                movieCount = 0;  // Reset count
-            }
+
         } else if (qName.equalsIgnoreCase("a")) {
             tempSim.setName(tempVal);
         } else if (qName.equalsIgnoreCase("f")) {
@@ -90,34 +85,16 @@ public class SAXParserExampleSIM extends DefaultHandler {
         if (sim.getName() == null || sim.getMovieId() == null) {
             return;
         }
-
         // Prepare the statement to insert data into the database
-        try (PreparedStatement stmt = connection.prepareStatement("INSERT INTO stars_in_movies (star_name, movie_id) VALUES (?, ?)")) {
+        try (PreparedStatement stmt = connection.prepareStatement("CALL add_star_in_movie(?, ?)")) {
+
             stmt.setString(1, sim.getName());
             stmt.setString(2, sim.getMovieId());
-
-            stmt.addBatch();  // Add the statement to the batch
-
-            movieCount++;  // Increment the movie count
-
-            // If the batch reaches the specified size, commit and reset
-            if (movieCount >= BATCH_SIZE) {
-                stmt.executeBatch();  // Execute the batch
-                connection.commit();  // Commit the transaction
-                movieCount = 0;  // Reset the count
-            }
+            stmt.execute();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    // Commit the remaining batch to the database
-    private void commitBatch() {
-        try {
-            connection.commit();  // Commit the transaction for any remaining statements
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }
