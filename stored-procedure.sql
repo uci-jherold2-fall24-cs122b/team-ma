@@ -21,7 +21,6 @@ FROM genres;
 
 
 DELIMITER //
-DROP PROCEDURE IF EXISTS add_star;
 CREATE PROCEDURE add_star (
     IN name VARCHAR(100),
     IN birthYear INTEGER,
@@ -44,7 +43,6 @@ DELIMITER ;
 
 
 DELIMITER //
-DROP PROCEDURE IF EXISTS add_genre;
 
 CREATE PROCEDURE add_genre (
     IN name VARCHAR(32),
@@ -66,8 +64,6 @@ DELIMITER ;
 
 
 DELIMITER //
-
-DROP PROCEDURE IF EXISTS add_movie;
 
 CREATE PROCEDURE add_movie (
     IN fid VARCHAR(10),
@@ -162,8 +158,6 @@ DELIMITER ;
 
 
 DELIMITER //
-DROP PROCEDURE IF EXISTS add_star_in_movie;
-
 CREATE PROCEDURE add_star_in_movie (
     IN stagename VARCHAR(100),
     IN movie_id VARCHAR(10)
