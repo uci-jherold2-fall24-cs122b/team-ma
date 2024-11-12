@@ -6,9 +6,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +16,12 @@ public class SAXParserExampleStars extends DefaultHandler {
     private String tempVal;
     private Star tempStar;
     private Connection connection;
-    public int total_stars;
+    private BufferedWriter duplicateWriter;
+    public int total_stars = 0;
+    public int duplicate_stars = 0;
 
     private List<Star> starList = new ArrayList<>();
+    private List<Star> duplicateStars = new ArrayList<>();
 
     public SAXParserExampleStars() {
         initializeDatabase();
@@ -59,6 +60,8 @@ public class SAXParserExampleStars extends DefaultHandler {
         try {
             total_stars = starList.size();
             System.out.println("Added " + total_stars + " stars");
+            System.out.println("Star duplicates found: " + duplicate_stars);
+            writeDuplicatesToFile();
             if (!starList.isEmpty()) {
                 insertStarIntoDatabase(); // Insert any remaining entries
             }
@@ -85,7 +88,12 @@ public class SAXParserExampleStars extends DefaultHandler {
 
     public void endElement(String uri, String localName, String qName) throws SAXException {
         if (qName.equalsIgnoreCase("actor")) {
-            starList.add(tempStar);
+            if (starList.contains(tempStar)) {
+                duplicateStars.add(tempStar);
+                duplicate_stars++;
+            } else {
+                starList.add(tempStar);
+            }
         } else if (qName.equalsIgnoreCase("stagename")) {
             tempStar.setName(tempVal);
         } else if (qName.equalsIgnoreCase("dob")) {
@@ -112,6 +120,20 @@ public class SAXParserExampleStars extends DefaultHandler {
             }
 
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void writeDuplicatesToFile() {
+        File logDir = new File("logs");
+        if (!logDir.exists()) {
+            logDir.mkdir(); // Creates the "logs" directory if it doesn't exist
+        }
+        try (PrintStream ps = new PrintStream(new FileOutputStream("logs/duplicate_stars.txt"))) {
+            for (Star duplicateStar : duplicateStars) {
+                ps.println(duplicateStar.toString()); // Write the duplicate to the file
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

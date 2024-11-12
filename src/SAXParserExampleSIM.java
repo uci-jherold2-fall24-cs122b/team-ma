@@ -6,9 +6,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,6 +20,9 @@ public class SAXParserExampleSIM extends DefaultHandler {
     private Connection connection;
     public int invalid_input = 0;
     public int total_stars_in_movies = 0;
+    public int duplicates = 0;
+    private List<StarInMovie> duplicateStars = new ArrayList<>();
+    private List<String> invalidMovieIDs = new ArrayList<>();
 
     // List to hold StarInMovie entries for batch insert
     private List<StarInMovie> simList = new ArrayList<>();
@@ -61,7 +62,10 @@ public class SAXParserExampleSIM extends DefaultHandler {
     private void closeDatabase() {
         try {
             total_stars_in_movies += simList.size();
+            System.out.println("Duplicates found: " + duplicates);
             System.out.println("Added " + total_stars_in_movies + " stars in movies");
+            writeDuplicatesToFile(duplicateStars);
+            writeInvalidToFile(invalidMovieIDs);
             if (!simList.isEmpty()) {
 
                 insertStarIntoDatabase(); // Insert any remaining entries
@@ -96,7 +100,8 @@ public class SAXParserExampleSIM extends DefaultHandler {
                     simList.clear(); // Clear the list for next batch
                 }
             } else {
-                invalid_input++;  // Duplicate entry
+                duplicates++;  // Duplicate entry
+                duplicateStars.add(tempSim);
             }
         } else if (qName.equalsIgnoreCase("a")) {
             tempSim.setName(tempVal);
@@ -131,7 +136,15 @@ public class SAXParserExampleSIM extends DefaultHandler {
                 } else {
                     // If movie doesn't exist, log and increment invalid count
                     //System.out.println("Movie ID " + sim.getMovieId() + " does not exist, skipping entry.");
-                    invalid_input++;
+                    if (invalidMovieIDs.contains(sim.getMovieId())) {
+                        if (!duplicateStars.contains(sim)) {
+                            duplicateStars.add(sim);
+                            duplicates++;
+                        }
+                    } else {
+                        invalidMovieIDs.add(sim.getMovieId());
+                        invalid_input++;
+                    }
                 }
             }
 
@@ -146,6 +159,34 @@ public class SAXParserExampleSIM extends DefaultHandler {
             } catch (SQLException rollbackEx) {
                 rollbackEx.printStackTrace();
             }
+        }
+    }
+
+    private void writeDuplicatesToFile(List<StarInMovie> list) {
+        File logDir = new File("logs");
+        if (!logDir.exists()) {
+            logDir.mkdir(); // Creates the "logs" directory if it doesn't exist
+        }
+        try (PrintStream ps = new PrintStream(new FileOutputStream("logs/duplicate_stars_in_movies.txt"))) {
+            for (StarInMovie star : list) {
+                ps.println(star.toString()); // Write the duplicate to the file
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void writeInvalidToFile(List<String> list) {
+        File logDir = new File("logs");
+        if (!logDir.exists()) {
+            logDir.mkdir(); // Creates the "logs" directory if it doesn't exist
+        }
+        try (PrintStream ps = new PrintStream(new FileOutputStream("logs/invalid_movie_ids_sim.txt"))) {
+            for (String movieId : list) {
+                ps.println(movieId); // Write the duplicate to the file
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

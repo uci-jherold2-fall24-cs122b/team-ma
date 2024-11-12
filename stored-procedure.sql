@@ -17,7 +17,7 @@ WHERE id REGEXP '^nm[0-9]+$';
 
 INSERT INTO next_ids
 SELECT 'genres', MAX(id) + 1
-FROM genres
+FROM genres;
 
 
 DELIMITER //

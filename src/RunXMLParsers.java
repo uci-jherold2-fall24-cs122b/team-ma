@@ -15,6 +15,6 @@ public class RunXMLParsers extends DefaultHandler {
         System.out.println("Updating stars in movies...");
         SAXParserExampleSIM sim = new SAXParserExampleSIM();
         sim.runExample();
-        System.out.println("Found " + sim.invalid_input + " invalid inputs.");
+        System.out.println("Found " + sim.invalid_input + " invalid movie IDs");
     }
 }
