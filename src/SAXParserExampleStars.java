@@ -1,21 +1,26 @@
 import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SAXParserExampleStars extends DefaultHandler {
 
     private String tempVal;
     private Star tempStar;
     private Connection connection;
+    public int total_stars;
+
+    private List<Star> starList = new ArrayList<>();
 
     public SAXParserExampleStars() {
         initializeDatabase();
@@ -42,9 +47,9 @@ public class SAXParserExampleStars extends DefaultHandler {
 
     private void parseDocument() {
         SAXParserFactory spf = SAXParserFactory.newInstance();
-        try {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("actors63.xml"))) {
             SAXParser sp = spf.newSAXParser();
-            sp.parse("actors63.xml", this);
+            sp.parse(new InputSource(bufferedReader), this);   // Parse the XML document
         } catch (SAXException | ParserConfigurationException | IOException e) {
             e.printStackTrace();
         }
@@ -52,6 +57,11 @@ public class SAXParserExampleStars extends DefaultHandler {
 
     private void closeDatabase() {
         try {
+            total_stars = starList.size();
+            System.out.println("Added " + total_stars + " stars");
+            if (!starList.isEmpty()) {
+                insertStarIntoDatabase(); // Insert any remaining entries
+            }
             if (connection != null && !connection.isClosed()) {
                 connection.commit();
                 connection.close();
@@ -75,7 +85,7 @@ public class SAXParserExampleStars extends DefaultHandler {
 
     public void endElement(String uri, String localName, String qName) throws SAXException {
         if (qName.equalsIgnoreCase("actor")) {
-            insertStarIntoDatabase(tempStar);
+            starList.add(tempStar);
         } else if (qName.equalsIgnoreCase("stagename")) {
             tempStar.setName(tempVal);
         } else if (qName.equalsIgnoreCase("dob")) {
@@ -87,23 +97,22 @@ public class SAXParserExampleStars extends DefaultHandler {
         }
     }
 
-    private void insertStarIntoDatabase(Star star) {
-
+    private void insertStarIntoDatabase() {
         try (CallableStatement starStatement = connection.prepareCall("{ CALL add_star(?, ?, ?) }")) {
-            starStatement.setString(1, tempStar.getName());
-            if (tempStar.getDob() == -1) {
-                starStatement.setNull(2, java.sql.Types.INTEGER);
-            } else {
-                starStatement.setInt(2, tempStar.getDob());
-            }
-            starStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            for (Star tempStar : starList) {
+                starStatement.setString(1, tempStar.getName());
+                if (tempStar.getDob() == -1) {
+                    starStatement.setNull(2, java.sql.Types.INTEGER);
+                } else {
+                    starStatement.setInt(2, tempStar.getDob());
+                }
+                starStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
 
-            int update = starStatement.executeUpdate();
+                int update = starStatement.executeUpdate();
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
-
 }
