@@ -1,9 +1,9 @@
 use moviedb;
 
 CREATE TABLE IF NOT EXISTS next_ids (
-	table_name VARCHAR(100) PRIMARY KEY,
+                                        table_name VARCHAR(100) PRIMARY KEY,
     next_id INT NOT NULL
-);
+    );
 
 INSERT INTO next_ids
 SELECT 'movies', IFNULL(MAX(CAST(SUBSTRING(id, 3) AS UNSIGNED)), 0) + 1
@@ -17,7 +17,8 @@ WHERE id REGEXP '^nm[0-9]+$';
 
 INSERT INTO next_ids
 SELECT 'genres', MAX(id) + 1
-FROM genres;
+FROM genres
+    ON DUPLICATE KEY UPDATE next_id = VALUES(next_id);
 
 
 DELIMITER //
@@ -43,7 +44,6 @@ DELIMITER ;
 
 
 DELIMITER //
-
 CREATE PROCEDURE add_genre (
     IN name VARCHAR(32),
     OUT new_id INT
@@ -64,6 +64,7 @@ DELIMITER ;
 
 
 DELIMITER //
+
 
 CREATE PROCEDURE add_movie (
     IN fid VARCHAR(10),
@@ -87,7 +88,11 @@ BEGIN
     IF EXISTS (SELECT 1
                FROM movies
                WHERE title = movieTitle AND year = movieYear AND director = movieDirector) THEN
-SELECT 'Movie already exists.' AS message;
+
+SELECT id INTO movie_id
+FROM movies
+WHERE title = movieTitle AND year = movieYear AND director = movieDirector;
+SET message = CONCAT(message, 'Movie (id: ', movie_id, ') exists! ');
 ELSE
         -- Generate a new movie ID
         IF fid IS NOT NULL THEN
@@ -104,13 +109,11 @@ END IF;
 
         -- Check if the star exists, otherwise add the star
 		IF starName IS NOT NULL THEN
-			IF EXISTS (SELECT 1 FROM stars WHERE name = starName AND (birthYear = starBirthYear OR
-            (birthYear IS NULL AND starBirthYear IS NULL))) THEN
-			SELECT id INTO star_id
-			FROM stars
-			WHERE name = starName AND (birthYear = starBirthYear OR (birthYear IS NULL AND starBirthYear IS NULL));
-
-		ELSE
+			IF EXISTS (SELECT 1 FROM stars WHERE name = starName ) THEN
+SELECT id INTO star_id
+FROM stars
+WHERE name = starName;
+ELSE
 				CALL add_star(starName, starBirthYear, star_id);
 				SET star_added = TRUE;
 END IF;
@@ -144,17 +147,23 @@ END IF;
 
         IF star_added THEN
             SET message = CONCAT(message, 'Star (id: ', star_id, ') added! ');
+ELSE
+			SET message = CONCAT(message, 'Star (id: ', star_id, ') exists! ');
 END IF;
 
         IF genre_added THEN
             SET message = CONCAT(message, 'Genre (id: ', genre_id, ') added! ');
+ELSE
+			SET message = CONCAT(message, 'Genre (id: ', genre_id, ') exists! ');
 END IF;
 
+
+END IF;
 SELECT message AS message;
 
-END IF;
 END //
 DELIMITER ;
+
 
 
 DELIMITER //
@@ -163,7 +172,8 @@ CREATE PROCEDURE add_star_in_movie (
     IN movie_id VARCHAR(10)
 )
 BEGIN
-    DECLARE star_id VARCHAR(10);
+
+DECLARE star_id VARCHAR(10);
 
 SELECT id INTO star_id
 FROM stars
