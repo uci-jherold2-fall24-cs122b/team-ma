@@ -26,6 +26,6 @@ Another change we made was implementing batch processing for the larger XML file
 
 
 ## Contributions:
-Meera Jagota-
+Meera Jagota- Implemented Dashboard including employee login and actions like viewing metadata, adding movies/stars. Created stored procedures in MySQL. Implemented basis of XML SAX parsing.  
 
 Anna Yoon- implemented reCAPTCHA, added HTTPS to AWS instance, introduced encrypted passwords, worked and troubleshot on optimizing XML parsers, registered domain name
