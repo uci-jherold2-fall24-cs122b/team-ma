@@ -24,6 +24,7 @@ public class SAXParserExample extends DefaultHandler {
     public int null_genres = 0;
     private List<String> duplicateMovies = new ArrayList<>();
     private List<String> nullGenres = new ArrayList<>();
+    private int genre_init;
 
     public Set<String> movieIds = new HashSet<>();
     private List<Movie> moviesToInsert = new ArrayList<>(); // Store movies in batches
@@ -31,6 +32,7 @@ public class SAXParserExample extends DefaultHandler {
 
     public SAXParserExample() {
         initializeDatabase();
+        genre_init = countGenres();
     }
 
     public void runExample() {
@@ -65,6 +67,8 @@ public class SAXParserExample extends DefaultHandler {
         movie_total += moviesToInsert.size();
         System.out.println("Inserted " + movie_total + " movies");
         System.out.println("Null genres: " + null_genres);
+        int new_genres = countGenres();
+        System.out.println("New genres: " + (new_genres - genre_init));
         writeNullToFile(nullGenres);
         writeDuplicatesToFile(duplicateMovies);
         try {
@@ -78,6 +82,19 @@ public class SAXParserExample extends DefaultHandler {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private int countGenres() {
+        String sql = "SELECT COUNT(*) FROM genres";
+        try (PreparedStatement movieStatement = connection.prepareStatement(sql)) {
+            ResultSet rs = movieStatement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);  // Retrieve the count from the first column
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     // Event Handlers for SAX Parser
