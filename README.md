@@ -3,6 +3,8 @@ This project is a movie browsing and shopping system called Fabflix. This websit
 
 ## Site: [fabflix.fun](https://fabflix.fun)
 
+## Video: https://www.youtube.com/watch?v=1JQ05Cbzobs
+
 ## Files with Prepared Statement:
 - SAXParserExampleSIM.java
 - SAXParserExample.java
