@@ -1,5 +1,5 @@
 # CS122B Project
-This project is a movie browsing and shopping system called Fabflix. This website allows users to search for movies by genre, title, year, director, or keyword. Users can sort the search results, browse movie listings, and add selected movies to a shopping cart. The system also includes a credit card verification process for completing purchases. Employees who work for Fabflix may also add movies/genres/stars to the database. Fabflix has also implemented XML parsing in their latest update.
+This project is a movie browsing and shopping system called Fabflix. This website allows users to search for movies by genre, title, year, director, or keyword. Users can sort the search results, browse movie listings, and add selected movies to a shopping cart. The system also includes a credit card verification process for completing purchases. Employees who work for Fabflix may also add movies/genres/stars to the database. Fabflix has also implemented XML parsing in their latest update. Fabflix also has implemented full text search.
 
 ## Site: [fabflix.fun](https://fabflix.fun)
 
@@ -14,18 +14,29 @@ This project is a movie browsing and shopping system called Fabflix. This websit
 - SingleMovieServlet.java
 - SingleStarServlet.java
 
-## Parsing Optimizations
-When we ran our naive approach to XML parsing, it took around 26 minutes to parse all of the files and update the database. It did not account for duplicates in the stars or in the stars_in_movies tables. It would put entries in the database with null genres, invalid movie IDs, and raise errors when attempting to add duplicates into the databases. However we implemented our optimizations and extensive error checking/logs to improve performance and properly update the database. We check all of the XML files for duplicate entries into the database, if there are null fields that should be non-null, and if the primary keys provided are invalid and unable to be inserted into the database.
+## Files with Prepared Statement and User Input (JDBC Pooling)
+- DashboardLoginServlet.java
+- IndexServlet.java
+- MovieServlet.java
+- PaymentServlet.java
+- LoginServlet.java
+- SingleMovieServlet.java
+- SingleStarServlet.java
+- context.xml
 
-An optimization time strategy that we used was the addition of BufferedInput. BufferedInput can help optimize input operations by improving the efficiency of data reading from streams. BufferedInput reduces redundant I/O calls by utilizing an internal buffer (a temporary memory storage) to hold data before it's processed. BI alleviates I/O overhead by reading large pieces of data into memory and then taking it out of memory and processing it for faster access. This allows the program to process larger amounts of data in one go, rather than small pieces gradually. This reduced our XML parsing time by 5-6 minutes, but we still needed to optimize further.
+# Connection Pooling
+- #### Include the filename/path of all code/configuration files in GitHub of using JDBC Connection Pooling.
+- (above)
+    
+- #### Explain how Connection Pooling is utilized in the Fabflix code.
+- In our Fabflix website, connection pooling is used to manage database connections efficiently. Connection pooling is a technique that allows database connections to be reused, rather than new connections each time the application interacts with the database. This greatly improves performance and scalability. In context.xml, a resource is defined which represents a connection pool for the MySQL database. In the servlets above, the connection pool is accessed using the JNDI lookup mechanism.
 
-Another change we made was implementing batch processing for the larger XML files. When dealing with large datasets, especially in database operations such as inserting, updating, or deleting records, batch processing is essential for optimizing performance. Batch processing groups multiple SQL commands together and sends them to the database in one operation. This reduces the number of database round trips, improving speed and reducing load on both the client and the database. We used a batch size of 1000, as each table size (pre-parse) hovered around 5,000 - 100,000. This ensured that there were less calls to the system, but did not overload the processor with mass amounts of data. This helped bring our parse time down to 15 minutes, spending the most time on cast124.xml.
+- #### Explain how Connection Pooling works with two backend SQL.
+- Connection pooling is also useful in working with two backend SQL databases as it reduces the overhead of opening and closing connections most of the time. This can be addressed by creating distinct DataSource objects for each database so that their connections are initiated and maintained separately, therefore enhancing scalability and performance. Nonetheless, operating multiple databases increases complexity, particularly when addressing transactions spanning more than one database. Multiple databaser’s connection pooling can be configured by creating separate DataSource resources, with specific connection pool for each, and linked to JNDI in your application.
 
-## Data Reports
-(see more in logs file)
 
 
 ## Contributions:
 Meera Jagota-
 
-Anna Yoon- implemented reCAPTCHA, added HTTPS to AWS instance, introduced encrypted passwords, worked and troubleshot on optimizing XML parsers, registered domain name
+Anna Yoon- autocomplete search and JDBC pooling
