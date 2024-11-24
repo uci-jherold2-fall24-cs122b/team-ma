@@ -88,6 +88,7 @@ public class LoginServlet extends HttpServlet {
             // Set response status to 500 (Internal Server Error)
             response.setStatus(500);
         } finally {
+            response.getWriter().close();
         }
     }
 }

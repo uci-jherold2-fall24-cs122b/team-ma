@@ -41,7 +41,11 @@ function submitLoginForm(formSubmitEvent) {
             method: "POST",
             // Serialize the login form to the data sent by POST request
             data: login_form.serialize(),
-            success: handleLoginResult
+            success: handleLoginResult,
+            error: function(xhr, status, error) {
+                console.log("Login failed:", status, error);
+                $("#login_error_message").text("An error occurred. Please try again.");
+            }
         }
     );
 }
