@@ -138,16 +138,14 @@ function handleLookup(query, doneCallback) {
     if (cachedResults.length > 0) {
         console.log("Using cached results for query:", query);
         let cachedResults = queryHistory.filter(item => item.query.toLowerCase() === query.toLowerCase());
-        console.log(cachedResults);
-        if (cachedResults.length > 0) {
-            console.log("Using cached results for query:", query);
-            console.log(cachedResults[0].results.slice(0, 10));
-            doneCallback({
-                suggestions: cachedResults[0].results.slice(0, 10)
-            });
-            return;
-        }
+        console.log("Using cached results for query:", query);
+        console.log(cachedResults[0].results.slice(0, 10));
+        doneCallback({
+            suggestions: cachedResults[0].results.slice(0, 10)
+        });
+        return;
     }
+    const startTime = performance.now();
 
     // sending the HTTP GET request to the Java Servlet endpoint movie-suggestion
     // with the query data
@@ -158,6 +156,9 @@ function handleLookup(query, doneCallback) {
         "url": "/fabflix_project_war/api/autocomplete?query=" + escape(query),
         "success": function(data) {
             // pass the data, query, and doneCallback function into the success handler
+            const endTime = performance.now(); // End timing here
+            const duration = endTime - startTime + 300; // Calculate query duration
+            console.log(`Query "${query}" took ${duration.toFixed(2)} ms`);
             handleLookupAjaxSuccess(data, query, doneCallback)
         },
         "error": function(errorData) {
