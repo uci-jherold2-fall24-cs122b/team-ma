@@ -124,11 +124,30 @@ $.ajax("api/index", {
  * The doneCallback is a callback function provided by the library, after you get the
  *   suggestion list from AJAX, you need to call this function to let the library know.
  */
+queryHistory = JSON.parse(localStorage.getItem('queryHistory')) || [];
+
+
 function handleLookup(query, doneCallback) {
     console.log("autocomplete initiated")
     console.log("sending AJAX request to backend Java Servlet")
+    queryHistory = JSON.parse(localStorage.getItem('queryHistory')) || [];
 
     // TODO: if you want to check past query results first, you can do it here
+    console.log(queryHistory);
+    let cachedResults = queryHistory.filter(item => item.query.toLowerCase() === query.toLowerCase());
+    if (cachedResults.length > 0) {
+        console.log("Using cached results for query:", query);
+        let cachedResults = queryHistory.filter(item => item.query.toLowerCase() === query.toLowerCase());
+        console.log(cachedResults);
+        if (cachedResults.length > 0) {
+            console.log("Using cached results for query:", query);
+            console.log(cachedResults[0].results.slice(0, 10));
+            doneCallback({
+                suggestions: cachedResults[0].results.slice(0, 10)
+            });
+            return;
+        }
+    }
 
     // sending the HTTP GET request to the Java Servlet endpoint movie-suggestion
     // with the query data
@@ -178,10 +197,15 @@ function handleLookupAjaxSuccess(data, query, doneCallback) {
                 }
             };
         });
+        console.log("THIS IS SUGGESTIONS");
         console.log(suggestions);
+        if (!queryHistory.find(item => item.query.toLowerCase() === query.toLowerCase())) {
+            queryHistory.push({ query: query, results: suggestions });
+            localStorage.setItem('queryHistory', JSON.stringify(queryHistory));
+        }
 
         // Call the doneCallback to return the suggestions to the autocomplete library
-        doneCallback({ suggestions: suggestions });
+        doneCallback({ suggestions: suggestions.slice(0, 10) });
     } else {
         console.log("Invalid data format received:", data);
         // Optionally, handle invalid data (e.g., show an error message to the user)
@@ -199,6 +223,7 @@ function handleSelectSuggestion(suggestion) {
     // TODO: jump to the specific result page based on the selected suggestion
 
     console.log("you select " + suggestion["title"] + " with ID " + suggestion["data"]["id"])
+    window.location.href = "/fabflix_project_war/single-movie.html?id=" + suggestion["data"]["id"] + "&sort=0&N=10&page=1";
 }
 
 
@@ -215,6 +240,10 @@ function handleSelectSuggestion(suggestion) {
 $('#autocomplete').autocomplete({
     // documentation of the lookup function can be found under the "Custom lookup function" section
     lookup: function (query, doneCallback) {
+        if (query.length < 3) {
+            console.log("Query too short, minimum 3 characters");
+            return;  // Do not perform the lookup if the query is too short
+        }
         handleLookup(query, doneCallback)
     },
     onSelect: function(suggestion) {
@@ -222,6 +251,7 @@ $('#autocomplete').autocomplete({
     },
     // set delay time
     deferRequestBy: 300,
+    minChars: 3,
     // there are some other parameters that you might want to use to satisfy all the requirements
     // TODO: add other parameters, such as minimum characters
 });
@@ -232,6 +262,7 @@ $('#autocomplete').autocomplete({
  */
 function handleNormalSearch(query) {
     console.log("doing normal search with query: " + query);
+    window.location.href = "/fabflix_project_war/movie.html?title=" + query + "&sort=0&N=10&page=1";
     // TODO: you should do normal search here
 }
 
