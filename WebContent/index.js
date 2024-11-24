@@ -153,7 +153,7 @@ function handleLookup(query, doneCallback) {
         "method": "GET",
         // generate the request url from the query.
         // escape the query string to avoid errors caused by special characters
-        "url": "/fabflix_project_war/api/autocomplete?query=" + escape(query),
+        "url": window.location.pathname.replace(/\/[^/]*$/, "") + "/api/autocomplete?query=" + escape(query),
         "success": function(data) {
             // pass the data, query, and doneCallback function into the success handler
             const endTime = performance.now(); // End timing here
@@ -224,7 +224,7 @@ function handleSelectSuggestion(suggestion) {
     // TODO: jump to the specific result page based on the selected suggestion
 
     console.log("you select " + suggestion["title"] + " with ID " + suggestion["data"]["id"])
-    window.location.href = "/fabflix_project_war/single-movie.html?id=" + suggestion["data"]["id"] + "&sort=0&N=10&page=1";
+    window.location.href = window.location.pathname.replace(/\/[^/]*$/, "") + "/single-movie.html?id=" + suggestion["data"]["id"] + "&sort=0&N=10&page=1";
 }
 
 
@@ -263,7 +263,7 @@ $('#autocomplete').autocomplete({
  */
 function handleNormalSearch(query) {
     console.log("doing normal search with query: " + query);
-    window.location.href = "/fabflix_project_war/movie.html?title=" + query + "&sort=0&N=10&page=1";
+    window.location.href = window.location.pathname.replace(/\/[^/]*$/, "") + "/movie.html?title=" + query + "&sort=0&N=10&page=1";
     // TODO: you should do normal search here
 }
 
