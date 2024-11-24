@@ -18,7 +18,6 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,7 +44,6 @@ public class MovieServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println("Get request");
 
         response.setContentType("application/json"); // Response mime type
 
@@ -77,17 +75,15 @@ public class MovieServlet extends HttpServlet {
             }
 
             // Declare our statement
-            Statement statement = conn.createStatement();
+            //Statement statement = conn.createStatement();
 
-            // old query : "SELECT * FROM movies as M, ratings as R WHERE M.id = R.movieId";
             // added duplicates in search...
             String query = "SELECT M.id, M.title, M.year, M.director, R.rating, R.numVotes, "
                     + "COUNT(*) OVER () AS total_count, "  // This provides the total count across all rows
                     + "GROUP_CONCAT(GIM.genreId) AS genre_ids "
                     + "FROM movies AS M "
-                    + "JOIN ratings AS R ON M.id = R.movieId "
+                    + "LEFT JOIN ratings AS R ON M.id = R.movieId "
                     + "JOIN genres_in_movies AS GIM ON M.id = GIM.movieId ";
-
 
             // take each search query and find ILIKE
             // ILIKE for non case sensitive
@@ -144,12 +140,14 @@ public class MovieServlet extends HttpServlet {
             }
 
                 // Perform the query
-            ResultSet rs = statement.executeQuery(query);
+            PreparedStatement statement = conn.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
 
             JsonArray jsonArray = new JsonArray();
 
             // Iterate through each row of rs
             int total_count = 0;
+            System.out.println(query);
             while (rs.next()) {
                 total_count = rs.getInt("total_count");
                 String movie_id = rs.getString("id");

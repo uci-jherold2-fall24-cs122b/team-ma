@@ -86,7 +86,8 @@ function handleSessionData(resultDataString) {
         }
 
         // Create the cell with the genre link
-        const cellHTML = "<td>" + '<a href=movie.html?title_letter=' + letter + '>' +
+        const cellHTML = "<td>" + '<a href=movie.html?title_letter=' + letter + '&sort=0&N=10&page=1'
+        + '>' +
             letter + '</a>' + "</td>";
 
         // Append the cell to the current row

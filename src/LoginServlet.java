@@ -4,6 +4,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.jasypt.util.password.StrongPasswordEncryptor;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -32,13 +33,21 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-
+        String recaptchaResponse = request.getParameter("g-recaptcha-response");
         /* This example only allows username/password to be test/test
         /  in the real project, you should talk to the database to verify username/password
         */
         JsonObject responseJsonObject = new JsonObject();
+        try {
+            RecaptchaVerifyUtils.verify(recaptchaResponse);
+        } catch (Exception e) {
+            responseJsonObject.addProperty("status", "fail");
+            responseJsonObject.addProperty("message", "Captcha verification failed");
+            response.getWriter().write(responseJsonObject.toString());
+            response.getWriter().close();
+            return;
+        }
         try (Connection conn = dataSource.getConnection()) {
-
             String loginQuery = "SELECT * FROM customers WHERE email = ?;";
             PreparedStatement loginStatement = conn.prepareStatement(loginQuery);
             loginStatement.setString(1, username);
@@ -46,7 +55,9 @@ public class LoginServlet extends HttpServlet {
             ResultSet rs = loginStatement.getResultSet();
             if(rs.next()) {
                 // username exists, check password
-                if(password.equals(rs.getString("password"))) {
+                String encryptedPassword = rs.getString("password");
+                StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
+                if (passwordEncryptor.checkPassword(password, encryptedPassword)) {
                     // Login success:
                     // set this user into the session
                     request.getSession().setAttribute("user", new User(username));

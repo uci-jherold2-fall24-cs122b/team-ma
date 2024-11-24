@@ -70,7 +70,7 @@ function handleMovieResult(resultData) {
         let genres = resultData[i]["genres"];
         for (let j = 0; j < genres.length; j++) {
             console.log("genres: ", genres);
-            rowHTML += '<a href=movie.html?genre_id=' + genres[j]['genre_id'] + '>'
+            rowHTML += '<a href=movie.html?genre_id=' + genres[j]['genre_id'] + '&sort=0&N=10&page=1' + '>'
                 + genres[j]["name"] +
                 '</a>';
             if (j < genres.length - 1) {
@@ -91,6 +91,10 @@ function handleMovieResult(resultData) {
             }
         }
         rowHTML += "</th>";
+
+        if(resultData[i]["movie_rating"] === 0){
+            resultData[i]["movie_rating"] = "N/A";
+        }
         rowHTML += "<th>" + resultData[i]["movie_rating"] + "</th>";
 
         rowHTML += "<th><button class='add-to-cart btn button_top' data-id='" + movieId +

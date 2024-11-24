@@ -16,7 +16,7 @@ h3 {
     text-align: center;
 }
 
-#payment_container {
+.form_container {
     border: 2px solid #ccc;
     border-radius: 15px;
     padding: 20px;

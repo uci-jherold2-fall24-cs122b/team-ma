@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <title>Dashboard</title>
+</head>
+<body>
+<h1>Add a Movie</h1>
+
+<a href="metadata.html" class="btn button_top">
+    <i class="fas fa-home"></i> Home
+</a>
+
+<a href="star.html" class="btn button_top">
+    <i class="fas fa-star"></i> Add Star
+</a>
+
+<a href="movie.html" class="btn button_top">
+    <i class="fas fa-film"></i> Add Movie
+</a>
+
+<a id="home-button" class="btn button_top" href="../index.html">
+    <i class="fas fa-cursor"></i> Browse Movies
+</a>
+
+<div class="form_container" id = "movie_container">
+    <h2>Add a Movie</h2>
+    <div id="movie_message" style = "height: 40px; text-align: center;"></div>
+
+    <form id="movie_form" method="post" action="#">
+
+
+        <label>
+            <input name="title" placeholder="Title" type="text" required>
+        </label>
+        <br>
+
+        <label>
+            <input name="year" placeholder="Year" type="number" required>
+        </label>
+        <br>
+        <label>
+            <input name="director" placeholder="Director" type="text" required>
+        </label>
+        <br>
+
+        <label>
+            <input name="star" placeholder="Star's Name" type="text" required>
+        </label>
+        <br>
+
+        <label>
+            <input name="birth_year" placeholder="Star's Birth Year" type="number">
+        </label>
+        <br>
+
+        <label>
+            <input name="genre" placeholder="Genre" type="text" required>
+        </label>
+
+        <button type="submit" class="btn button_top" style = "width: 80%;">
+            <i class='fas fa-plus'></i> Add
+        </button>
+    </form>
+</div>
+
+
+<!-- Load jQuery and Bootstrap JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="movie.js"></script>
+
+</body>
+</html>
