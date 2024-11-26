@@ -37,6 +37,6 @@ This project is a movie browsing and shopping system called Fabflix. This websit
 
 
 ## Contributions:
-Meera Jagota-
+Meera Jagota- finished tasks 3 and 4. Implemented master-slave replication, connection pooling, and sticky sessions 
 
 Anna Yoon- autocomplete search and JDBC pooling
