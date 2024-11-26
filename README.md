@@ -26,7 +26,7 @@ This project is a movie browsing and shopping system called Fabflix. This websit
 
 # Connection Pooling
 - #### Include the filename/path of all code/configuration files in GitHub of using JDBC Connection Pooling.
-- (above)
+- 000-default.conf
     
 - #### Explain how Connection Pooling is utilized in the Fabflix code.
 - In our Fabflix website, connection pooling is used to manage database connections efficiently. Connection pooling is a technique that allows database connections to be reused, rather than new connections each time the application interacts with the database. This greatly improves performance and scalability. In context.xml, a resource is defined which represents a connection pool for the MySQL database. In the servlets above, the connection pool is accessed using the JNDI lookup mechanism.
