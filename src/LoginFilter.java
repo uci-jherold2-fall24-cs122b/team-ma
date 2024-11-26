@@ -21,24 +21,24 @@ public class LoginFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         System.out.println("LoginFilter: " + httpRequest.getRequestURI());
+        chain.doFilter(request, response);
 
         // Check if this URL is allowed to access without logging in
-        if (this.isUrlAllowedWithoutLogin(httpRequest.getRequestURI())) {
-            // Keep default action: pass along the filter chain
-            chain.doFilter(request, response);
-            return;
-        }
+        // if (this.isUrlAllowedWithoutLogin(httpRequest.getRequestURI())) {
+        //     // Keep default action: pass along the filter chain
+        //     return;
+        // }
 
-        // Redirect to login page if the "user" attribute doesn't exist in session
-        if (httpRequest.getSession().getAttribute("user") == null && httpRequest.getSession().getAttribute("employee") == null) {
-            httpResponse.sendRedirect("login.html");
-        } else {
-            if(httpRequest.getSession().getAttribute("employee") == null && httpRequest.getRequestURI().contains("/_dashboard")) {
-                System.out.println("HIII");
-                httpResponse.sendRedirect("login.html");
-            }
-            chain.doFilter(request, response);
-        }
+        // // Redirect to login page if the "user" attribute doesn't exist in session
+        // if (httpRequest.getSession().getAttribute("user") == null && httpRequest.getSession().getAttribute("employee") == null) {
+        //     httpResponse.sendRedirect("login.html");
+        // } else {
+        //     if(httpRequest.getSession().getAttribute("employee") == null && httpRequest.getRequestURI().contains("/_dashboard")) {
+        //         System.out.println("HIII");
+        //         httpResponse.sendRedirect("login.html");
+        //     }
+        //     chain.doFilter(request, response);
+        // }
     }
 
     private boolean isUrlAllowedWithoutLogin(String requestURI) {
