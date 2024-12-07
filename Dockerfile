@@ -19,7 +19,7 @@ FROM tomcat:10-jdk11
 WORKDIR /app
 
 # copy the war file what we have generated earlier into the tomcat webapps folder inside the container
-COPY --from=builder /app/target/fablix_project.war /usr/local/tomcat/webapps/fablix_project.war
+COPY --from=builder /app/target/fabflix_project.war /usr/local/tomcat/webapps/fabflix_project.war
 
 # open the 8080 port of the container, so that outside requests can reach the tomcat server
 EXPOSE 8080
