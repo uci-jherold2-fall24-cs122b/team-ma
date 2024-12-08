@@ -82,7 +82,7 @@ public class LoginServlet extends HttpServlet {
 
             // Write error message JSON object to output
             JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("errorMessage", e.getMessage());
+            jsonObject.addProperty("errorMessage", "UPDATED: ERROR");
             response.getWriter().write(jsonObject.toString());
 
             // Set response status to 500 (Internal Server Error)
