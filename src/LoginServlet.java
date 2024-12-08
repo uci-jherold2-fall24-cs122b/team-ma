@@ -56,8 +56,8 @@ public class LoginServlet extends HttpServlet {
             if(rs.next()) {
                 // username exists, check password
                 String encryptedPassword = rs.getString("password");
-                StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
-                if (passwordEncryptor.checkPassword(password, encryptedPassword)) {
+                // StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
+                if (password.equals(encryptedPassword)) {
                     // Login success:
                     // set this user into the session
                     request.getSession().setAttribute("user", new User(username));
