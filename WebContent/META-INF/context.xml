@@ -7,7 +7,7 @@
           type="javax.sql.DataSource"
           username="mytestuser"
           password="My6$Password"
-          url="jdbc:mysql://host.docker.internal:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false"/>
+          url="jdbc:mysql://mysql-primary:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false"/>
 
     <Resource name="jdbc/MySQLReadOnly"
           auth="Container"
@@ -17,7 +17,7 @@
           type="javax.sql.DataSource"
           username="mytestuser"
           password="My6$Password"
-          url="jdbc:mysql://host.docker.internal:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false"/>
+          url="jdbc:mysql://mysql-primary:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false"/>
     
 <!--     <Resource name="jdbc/moviedb" auth="Container" type="javax.sql.DataSource"
               maxTotal="100" maxIdle="30" maxWaitMillis="10000"
