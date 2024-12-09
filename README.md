@@ -36,9 +36,15 @@ This project is a movie browsing and shopping system called Fabflix. This websit
 - #### Explain how Connection Pooling works with two backend SQL.
 - Connection pooling is also useful in working with two backend SQL databases as it reduces the overhead of opening and closing connections most of the time. This can be addressed by creating distinct DataSource objects for each database so that their connections are initiated and maintained separately, therefore enhancing scalability and performance. Nonetheless, operating multiple databases increases complexity, particularly when addressing transactions spanning more than one database. Multiple databaser’s connection pooling can be configured by creating separate DataSource resources, with specific connection pool for each, and linked to JNDI in your application.
 
+- # JMeter
+- ## Throughput with 1 Control Plane + 3 Worker nodes + 1 master MySQL pod + 1 slave MySQL pod + 2 Fabflix pods
+- around 6,807.015/minute
+- ## Throughput with 1 Control Plane + 4 Worker nodes + 1 master MySQL pod + 1 slave MySQL pod + 3 Fabflix pods
+- around 6,560.432/minute
+
 
 
 ## Contributions:
 Meera Jagota- Finished tasks 1-3. Set up Docker images and Kuberneter cluster/pods. 
 
-Anna Yoon- autocomplete search and JDBC pooling
+Anna Yoon- Finished task 5, ran jmeter tests
