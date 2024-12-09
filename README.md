@@ -38,9 +38,9 @@ This project is a movie browsing and shopping system called Fabflix. This websit
 
 - # JMeter
 - ## Throughput with 1 Control Plane + 3 Worker nodes + 1 master MySQL pod + 1 slave MySQL pod + 2 Fabflix pods
-- around 6,807.015/minute
-- ## Throughput with 1 Control Plane + 4 Worker nodes + 1 master MySQL pod + 1 slave MySQL pod + 3 Fabflix pods
 - around 6,560.432/minute
+- ## Throughput with 1 Control Plane + 4 Worker nodes + 1 master MySQL pod + 1 slave MySQL pod + 3 Fabflix pods
+- around 6,807.015/minute
 
 
 
