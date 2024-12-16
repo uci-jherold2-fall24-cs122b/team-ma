@@ -1,12 +1,6 @@
 # CS122B Project
 This project is a movie browsing and shopping system called Fabflix. This website allows users to search for movies by genre, title, year, director, or keyword. Users can sort the search results, browse movie listings, and add selected movies to a shopping cart. The system also includes a credit card verification process for completing purchases. Employees who work for Fabflix may also add movies/genres/stars to the database. Fabflix has also implemented XML parsing in their latest update. Fabflix also has implemented full text search.
 
-## Site: [fabflix.fun](https://fabflix.fun)
-
-## [Youtube Link Project 5](https://youtu.be/LwwNBPgVW1g)
-## [Youtube Link Project 4](https://youtu.be/Yi3VBtv_44I)
-
-
 ## Files with Prepared Statement:
 - SAXParserExampleSIM.java
 - SAXParserExample.java
@@ -43,10 +37,3 @@ This project is a movie browsing and shopping system called Fabflix. This websit
 - around 6,560.432/minute
 - ## Throughput with 1 Control Plane + 4 Worker nodes + 1 master MySQL pod + 1 slave MySQL pod + 3 Fabflix pods
 - around 6,807.015/minute
-
-
-
-## Contributions:
-Meera Jagota- Finished tasks 1-3. Set up Docker images and Kuberneter cluster/pods. 
-
-Anna Yoon- Finished task 5, ran jmeter tests
